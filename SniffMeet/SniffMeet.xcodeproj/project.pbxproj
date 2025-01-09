@@ -80,6 +80,9 @@
 		99A5A1B32CFFE545002F1D2D /* ProfileDrop.gif in Resources */ = {isa = PBXBuildFile; fileRef = 99A5A1B22CFFE544002F1D2D /* ProfileDrop.gif */; };
 		99A5A1B42CFFE545002F1D2D /* ProfileDrop.gif in Resources */ = {isa = PBXBuildFile; fileRef = 99A5A1B22CFFE544002F1D2D /* ProfileDrop.gif */; };
 		99A5E1A92D300CE9003B00A8 /* SupabaseError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20E714F2CEC595C00272B25 /* SupabaseError.swift */; };
+		99A5E1B92D302D65003B00A8 /* ImageCacheable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320522BD2D0181A700F1677C /* ImageCacheable.swift */; };
+		99A5E1BA2D303144003B00A8 /* CacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32A7563B2D00397D00965F0A /* CacheManager.swift */; };
+		99A5E1BB2D30322C003B00A8 /* SNMLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD880B592CECE8F90093BEB9 /* SNMLogger.swift */; };
 		99FA4E792CE0FBBF00553C2E /* ProfileInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99FA4E782CE0FBBF00553C2E /* ProfileInputViewController.swift */; };
 		A202A1152CEDD50700B98203 /* SupabaseDatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A202A1142CEDD50700B98203 /* SupabaseDatabaseManager.swift */; };
 		A202A1172CEDD5EF00B98203 /* SupabaseDatabaseRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A202A1162CEDD5EF00B98203 /* SupabaseDatabaseRequest.swift */; };
@@ -2095,11 +2098,13 @@
 			files = (
 				FD69B1CB2CE3E9B4009D71DC /* UserDefaultsTests.swift in Sources */,
 				FD69B1C32CE3BCE4009D71DC /* UserDefaultsManager.swift in Sources */,
+				99A5E1B92D302D65003B00A8 /* ImageCacheable.swift in Sources */,
 				320045352CF4353900D08B6D /* SNMFileManager.swift in Sources */,
 				3200453A2CF43F3800D08B6D /* FileManagerTest.swift in Sources */,
 				FD69B1C42CE3BCE4009D71DC /* KeychainManager.swift in Sources */,
 				FD69B1CD2CE3E9BB009D71DC /* KeychainTests.swift in Sources */,
 				32A7563E2D00398100965F0A /* CacheManager.swift in Sources */,
+				99A5E1BB2D30322C003B00A8 /* SNMLogger.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2110,6 +2115,7 @@
 				FDCD02D92CE9183700B627D8 /* EndpointTests.swift in Sources */,
 				FDCD02C52CE917A400B627D8 /* HTTPStatusCode.swift in Sources */,
 				FDA04AA82CE91DF8002605AC /* Data + append.swift in Sources */,
+				99A5E1BA2D303144003B00A8 /* CacheManager.swift in Sources */,
 				FDA04AA62CE91DBF002605AC /* MultipartFormData.swift in Sources */,
 				FDCD02D52CE9182200B627D8 /* SNMNetworkTests.swift in Sources */,
 				FDCD02C62CE917A400B627D8 /* NetworkProvider.swift in Sources */,
