@@ -79,10 +79,10 @@
 		995D94D22CEDF037005A47BF /* MPCProfileDropDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 995D94D12CEDF031005A47BF /* MPCProfileDropDTO.swift */; };
 		99A5A1B32CFFE545002F1D2D /* ProfileDrop.gif in Resources */ = {isa = PBXBuildFile; fileRef = 99A5A1B22CFFE544002F1D2D /* ProfileDrop.gif */; };
 		99A5A1B42CFFE545002F1D2D /* ProfileDrop.gif in Resources */ = {isa = PBXBuildFile; fileRef = 99A5A1B22CFFE544002F1D2D /* ProfileDrop.gif */; };
+		99A5E1A92D300CE9003B00A8 /* SupabaseError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20E714F2CEC595C00272B25 /* SupabaseError.swift */; };
 		99FA4E792CE0FBBF00553C2E /* ProfileInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99FA4E782CE0FBBF00553C2E /* ProfileInputViewController.swift */; };
 		A202A1152CEDD50700B98203 /* SupabaseDatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A202A1142CEDD50700B98203 /* SupabaseDatabaseManager.swift */; };
 		A202A1172CEDD5EF00B98203 /* SupabaseDatabaseRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A202A1162CEDD5EF00B98203 /* SupabaseDatabaseRequest.swift */; };
-		A20E71502CEC595C00272B25 /* SupabaseError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20E714F2CEC595C00272B25 /* SupabaseError.swift */; };
 		A20E71522CEC5FE900272B25 /* SupabaseUserResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20E71512CEC5FE900272B25 /* SupabaseUserResponse.swift */; };
 		A21435F72CE20D2500564A4D /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A21435F62CE20D2500564A4D /* TabBarController.swift */; };
 		A220400B2CF6B89800D1E8CB /* UserInfoDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = A220400A2CF6B89800D1E8CB /* UserInfoDTO.swift */; };
@@ -1909,6 +1909,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				99A5E1A92D300CE9003B00A8 /* SupabaseError.swift in Sources */,
 				A202A1152CEDD50700B98203 /* SupabaseDatabaseManager.swift in Sources */,
 				995D94622CE598FD005A47BF /* NIManager.swift in Sources */,
 				FDBFA9A12CE1E51500AA9220 /* SNMColor.swift in Sources */,
@@ -1946,8 +1947,6 @@
 				A21435F72CE20D2500564A4D /* TabBarController.swift in Sources */,
 				320043762CDCA18E00D08B6D /* (null) in Sources */,
 				995D94D22CEDF037005A47BF /* MPCProfileDropDTO.swift in Sources */,
-				A20E71502CEC595C00272B25 /* SupabaseError.swift in Sources */,
-				A20E71502CEC595C00272B25 /* SupabaseError.swift in Sources */,
 				32A7563C2D00398100965F0A /* CacheManager.swift in Sources */,
 				FD11527D2CFC901A008955C4 /* NotificationListRouter.swift in Sources */,
 				FDCD02CF2CE917D800B627D8 /* MockRequest.swift in Sources */,
