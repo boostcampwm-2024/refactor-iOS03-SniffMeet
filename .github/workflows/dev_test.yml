@@ -26,6 +26,8 @@ jobs:
           xcode-version: 16.1
       - name: List available devices
         run: xcrun simctl list devices
+      - name: Install SwiftLint
+        run: brew install swiftlint
       - name: Build Xcode
         run: |
           xcodebuild clean test \
