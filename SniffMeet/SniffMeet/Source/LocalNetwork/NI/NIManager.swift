@@ -9,7 +9,7 @@ import Combine
 import MultipeerConnectivity
 import NearbyInteraction
 
-class NIManager: NSObject {
+final class NIManager: NSObject {
     private var niSession: NISession?
     private var mpcManager: MPCManager
     private var cancellables = Set<AnyCancellable>()
@@ -56,8 +56,12 @@ class NIManager: NSObject {
 
         mpcManager.receivedViewTransitionPublisher
             .sink { [weak self] isViewTransitioning in
-                self?.viewTransitionInfo.insert(isViewTransitioning)
+                self?.viewTransitionInfo.insert(isViewTransitioning) // receive 메세지가 들어옴
                 SNMLogger.info("viewTrnasitionInfo: \(self?.viewTransitionInfo ?? [])")
+                
+                if self?.viewTransitionInfo.count == 2 {
+                    self?.endSession()
+                }
             }
             .store(in: &cancellables)
     }
@@ -121,15 +125,19 @@ extension NIManager: NISessionDelegate {
         SNMLogger.info("Distance and Direction to peer: \(distance) and \(direction)")
 
         if distance > minDistance && distance < maxDistance {
-            SNMLogger.log("거리와 방향 조건 만족")
-            Task { @MainActor in
-                isViewTransitioning.send(true)
-                viewTransitionInfo.insert("send")
-                mpcManager.send(viewTransitionInfo: "receive")
+            guard let profile = mpcManager.profile else {
+                SNMLogger.log("보낼 데이터가 없다. ")
+                return
             }
-
-            if viewTransitionInfo.count == 2 {
-                endSession()
+            SNMLogger.log("거리와 방향 조건 만족")
+            mpcManager.sendData(profile: profile)
+            // 전송 끝
+            // 예측하지 못한 상황
+            Task { @MainActor in
+                isViewTransitioning.send(true) // 메이트리스트에서 화면전환을 해도 된다의 신호
+                viewTransitionInfo.insert("send") // 종료 조건 중 하나를 달성했다. (자신의 프로필 데이터를 보냈다의 의미)
+                // 연결 종료 요청 코드 send
+                mpcManager.send(viewTransitionInfo: "receive") // ni 조건이 만족되기 전에 데이터 전송되니까
             }
         }
     }
