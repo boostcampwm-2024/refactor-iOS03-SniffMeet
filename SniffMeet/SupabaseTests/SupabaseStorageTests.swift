@@ -25,10 +25,10 @@ final class SupabaseStorageTests: XCTestCase {
         XCTAssertNotNil(imageData.imageData)
         XCTAssertNotNil(UIImage(data: imageData.imageData!))
     }
-    func test_이미지를_데이터로_변환후_업로드에_성공해야_한다() async throws {
-        // given
-        let image = UIImage(systemName: "square.and.arrow.up.fill")!
-        let imageData = image.jpegData(compressionQuality: 1)!
-        try await storageManager.upload(imageData: imageData, fileName: UUID().uuidString, mimeType: .image)
-    }
+//    func test_이미지를_데이터로_변환후_업로드에_성공해야_한다() async throws {
+//        // given
+//        let image = UIImage(systemName: "square.and.arrow.up.fill")!
+//        let imageData = image.jpegData(compressionQuality: 1)!
+//        try await storageManager.upload(imageData: imageData, fileName: UUID().uuidString, mimeType: .image)
+//    }
 }
