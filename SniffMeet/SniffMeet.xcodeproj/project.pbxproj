@@ -99,7 +99,7 @@
 		A24082702CEB27DE009109A0 /* SupabaseAuthRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A240826F2CEB27DE009109A0 /* SupabaseAuthRequest.swift */; };
 		A24082722CEB36B8009109A0 /* SupabaseTokenRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24082712CEB36B8009109A0 /* SupabaseTokenRequest.swift */; };
 		A24CD92B2D362E8F00492339 /* TryProfileDropUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24CD92A2D362E8F00492339 /* TryProfileDropUseCase.swift */; };
-		A24CD92E2D36324300492339 /* SendProfileUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24CD92D2D36324300492339 /* SendProfileUseCase.swift */; };
+		A24CD93F2D364F0400492339 /* QuitProfileDropUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24CD93E2D364F0400492339 /* QuitProfileDropUseCase.swift */; };
 		A25BE4522CEBB5A900886763 /* SupabaseSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = A25BE4512CEBB5A900886763 /* SupabaseSession.swift */; };
 		A25BE4562CEBB63A00886763 /* SupabaseUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A25BE4552CEBB63A00886763 /* SupabaseUser.swift */; };
 		A25BE4582CEBB95C00886763 /* SupabaseRefreshResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A25BE4572CEBB95C00886763 /* SupabaseRefreshResponse.swift */; };
@@ -346,7 +346,7 @@
 		A240826F2CEB27DE009109A0 /* SupabaseAuthRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupabaseAuthRequest.swift; sourceTree = "<group>"; };
 		A24082712CEB36B8009109A0 /* SupabaseTokenRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupabaseTokenRequest.swift; sourceTree = "<group>"; };
 		A24CD92A2D362E8F00492339 /* TryProfileDropUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TryProfileDropUseCase.swift; sourceTree = "<group>"; };
-		A24CD92D2D36324300492339 /* SendProfileUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendProfileUseCase.swift; sourceTree = "<group>"; };
+		A24CD93E2D364F0400492339 /* QuitProfileDropUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuitProfileDropUseCase.swift; sourceTree = "<group>"; };
 		A25BE4512CEBB5A900886763 /* SupabaseSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupabaseSession.swift; sourceTree = "<group>"; };
 		A25BE4552CEBB63A00886763 /* SupabaseUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupabaseUser.swift; sourceTree = "<group>"; };
 		A25BE4572CEBB95C00886763 /* SupabaseRefreshResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupabaseRefreshResponse.swift; sourceTree = "<group>"; };
@@ -727,7 +727,7 @@
 			isa = PBXGroup;
 			children = (
 				A24CD92A2D362E8F00492339 /* TryProfileDropUseCase.swift */,
-				A24CD92D2D36324300492339 /* SendProfileUseCase.swift */,
+				A24CD93E2D364F0400492339 /* QuitProfileDropUseCase.swift */,
 			);
 			path = LocalNetworkUseCase;
 			sourceTree = "<group>";
@@ -1960,7 +1960,6 @@
 				320047B42CFC90C100D08B6D /* SessionViewController.swift in Sources */,
 				320045362CF4353900D08B6D /* SNMFileManager.swift in Sources */,
 				320044582CE5B04C00D08B6D /* ProfileCreateRouter.swift in Sources */,
-				A24CD92E2D36324300492339 /* SendProfileUseCase.swift in Sources */,
 				A25BE4582CEBB95C00886763 /* SupabaseRefreshResponse.swift in Sources */,
 				FDEAEA7C2CE314A7005890FA /* BaseViewController.swift in Sources */,
 				FDE768A12CF7873600B5DE88 /* RequestNotificationAuthUseCase.swift in Sources */,
@@ -2020,6 +2019,7 @@
 				FDBFA9B12CE1FE5500AA9220 /* LayoutConstant.swift in Sources */,
 				320044752CEB4D6900D08B6D /* RequestWalkRouter.swift in Sources */,
 				320044962CED80DA00D08B6D /* RespondWalkRouter.swift in Sources */,
+				A24CD93F2D364F0400492339 /* QuitProfileDropUseCase.swift in Sources */,
 				FDE768942CF782E900B5DE88 /* WalkAPSDTO.swift in Sources */,
 				320043912CDF3D7F00D08B6D /* KeywordButton.swift in Sources */,
 				FD11526F2CFB33B6008955C4 /* RespondMapViewController.swift in Sources */,
