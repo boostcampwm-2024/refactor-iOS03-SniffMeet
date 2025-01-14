@@ -15,16 +15,12 @@ extension String {
 }
 
 final class MPCManager: NSObject {
-    let dataManager = LocalDataManager()
     let advertiser: MPCAdvertiser
     let browser: MPCBrowser
     let session: MCSession
     let mypeerID: MCPeerID
-    var dog: UserInfo?
-    var profile: DogProfileDTO?
 
     private var cancellables = Set<AnyCancellable>()
-
     @Published var paired: Bool = false
 
     var receivedTokenPublisher = PassthroughSubject<Data, Never>()
@@ -32,13 +28,6 @@ final class MPCManager: NSObject {
     var receivedViewTransitionPublisher = PassthroughSubject<String, Never>()
     var isAvailableToBeConnected: Bool = false {
         didSet {
-            do {
-                dog = try dataManager.loadData(forKey: "dogInfo", type: UserInfo.self)
-                updateProfile(dogInfo: dog ?? UserInfo.example)
-            } catch {
-                SNMLogger.error("loadData error : \(error)")
-            }
-
             if isAvailableToBeConnected {
                 advertiser.startAdvertising()
                 browser.startBrowsing()
@@ -107,7 +96,6 @@ final class MPCManager: NSObject {
             SNMLogger.log("no one is connected")
             return
         }
-        
         do {
             try self.session.send(data, toPeers: session.connectedPeers, with: .reliable)
             SNMLogger.log("DogProfileInfo 전송 성공")
@@ -147,7 +135,6 @@ extension MPCManager: MCSessionDelegate {
                 self.paired = true
                 self.isAvailableToBeConnected = false
                 SNMLogger.info("ConnectedPeers: \(session.connectedPeers)")
-                sendData(profile: profile ?? DogProfileDTO.example)
             }
         default:
             Task { @MainActor in
@@ -156,7 +143,11 @@ extension MPCManager: MCSessionDelegate {
         }
     }
 
-    func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
+    func session(
+        _ session: MCSession,
+        didReceive data: Data,
+        fromPeer peerID: MCPeerID
+    ) {
         SNMLogger.info("didReceive bytes \(data.count) bytes")
 
         do {
