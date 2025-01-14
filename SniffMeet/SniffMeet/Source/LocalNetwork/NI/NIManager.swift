@@ -11,15 +11,14 @@ import NearbyInteraction
 
 final class NIManager: NSObject {
     private var niSession: NISession?
-    private var mpcManager: MPCManager
     private var cancellables = Set<AnyCancellable>()
-
     private let minDistance: Float = 0.09
     private let maxDistance: Float = 0.15
     private let minDirection: simd_float3 = simd_float3(-0.6, -0.3, -1.0)
     private let maxDirection: simd_float3 = simd_float3(0.6, 0.3, -0.8)
 
     @Published var niPaired: Bool = false
+    var mpcManager: MPCManager
     var isViewTransitioning = PassthroughSubject<Bool, Never>()
     var viewTransitionInfo = Set<String>()
 

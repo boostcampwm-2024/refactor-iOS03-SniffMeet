@@ -101,21 +101,18 @@ final class MPCManager: NSObject {
             SNMLogger.error("error sending \(error.localizedDescription)")
         }
     }
-
-    func sendData(profile: DogProfileDTO) {
+    
+    func sendData(data: Data) {
         guard !session.connectedPeers.isEmpty else {
             SNMLogger.log("no one is connected")
             return
         }
-
+        
         do {
-            let dataToSend = MPCProfileDropDTO(token: nil, profile: profile, transitionMessage: nil)
-            let encodedData = try JSONEncoder().encode(dataToSend)
-            SNMLogger.info("encodedData is  \(encodedData)")
-            sendProfileData(data: encodedData)
-
+            try self.session.send(data, toPeers: session.connectedPeers, with: .reliable)
+            SNMLogger.log("DogProfileInfo 전송 성공")
         } catch {
-            SNMLogger.error("DogProfileInfo 전송 실패: \(error.localizedDescription)")
+            SNMLogger.error("DogProfileInfo 전송 실패 \(error.localizedDescription)")
         }
     }
 
@@ -129,20 +126,6 @@ final class MPCManager: NSObject {
             try session.send(encodedData, toPeers: session.connectedPeers, with: .reliable)
         } catch {
             SNMLogger.error("error sending \(error.localizedDescription)")
-        }
-    }
-
-    private func updateProfile(dogInfo: UserInfo) {
-        guard let userID = SessionManager.shared.session?.user?.userID else { return }
-        profile = DogProfileDTO(id: userID, name: dogInfo.name, keywords: dogInfo.keywords, profileImage: dogInfo.profileImage)
-    }
-
-    private func sendProfileData(data: Data) {
-        do {
-            try self.session.send(data, toPeers: session.connectedPeers, with: .reliable)
-            SNMLogger.log("DogProfileInfo 전송 성공")
-        } catch {
-            SNMLogger.error("DogProfileInfo 전송 실패 \(error.localizedDescription)")
         }
     }
 }
