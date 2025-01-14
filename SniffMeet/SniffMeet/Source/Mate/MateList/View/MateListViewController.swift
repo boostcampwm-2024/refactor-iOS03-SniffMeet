@@ -20,7 +20,6 @@ final class MateListViewController: BaseViewController, MateListViewable {
     private let addMateButton = AddMateButton(title: "새 메이트를 연결하세요")
     private var mpcManager: MPCManager?
     private var niManager: NIManager?
-    private var count: Int = 0
     var dogProfile: DogProfileDTO?
 
     override func viewWillAppear(_ animated: Bool) {
@@ -101,22 +100,7 @@ final class MateListViewController: BaseViewController, MateListViewable {
                       latest: false)
             .sink { [weak self] _ in
                 self?.mpcManager?.isAvailableToBeConnected = true
-                self?.count = 1
                 self?.addMateButton.buttonState = .connecting
-            }
-            .store(in: &cancellables)
-
-        mpcManager?.$paired
-            .receive(on: RunLoop.main)
-            .sink { [weak self] isPaired in
-                if 1...3 ~= self?.count ?? 0 {
-                    if !isPaired {
-                        self?.addMateButton.buttonState = .failure
-                        self?.presenter?.showAlertDisconnected()
-                    }
-                    self?.addMateButton.buttonState = .connecting
-                }
-                self?.count += 1
             }
             .store(in: &cancellables)
 
