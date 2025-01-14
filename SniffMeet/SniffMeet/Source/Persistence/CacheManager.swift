@@ -35,6 +35,10 @@ final class ImageNSCacheManager {
         self.cache = cache
         self.fileManager = fileManager
         cache.totalCostLimit = 5 * 1024 * 1024 // 5MB
+
+        if let content = try? FileManager.default.contentsOfDirectory(atPath: cacheDirectoryPath.path) {
+            usageOrder = content
+        }
     }
     
     func saveMemoryCache(urlString: String, cacheableImage: CacheableImage) {
@@ -44,9 +48,11 @@ final class ImageNSCacheManager {
     func saveDiskCache(urlString: String, cacheableImage: CacheableImage) {
         do {
             let data = try encoder.encode(cacheableImage)
-            try fileManager.set(value: data, forKey: urlString)
 
-            // 디스크 캐시에 저장 후 사용 순서 업데이트
+            if !FileManager.default.fileExists(atPath: cacheDirectoryPath.path) {
+                try FileManager.default.createDirectory(at: cacheDirectoryPath, withIntermediateDirectories: true, attributes: nil)
+            }
+            try data.write(to: cacheDirectoryPath.appendingPathComponent(urlString))
             updateDiskUsageOrder(urlString: urlString)
             removeOldestDiskImage()
         } catch {
@@ -86,16 +92,22 @@ final class ImageNSCacheManager {
             guard let oldestKey = usageOrder.first else { return }
             usageOrder.removeFirst()
 
-            try? fileManager.delete(forKey: oldestKey)
+            let filePath = cacheDirectoryPath.appendingPathComponent(oldestKey)
+            do {
+                try FileManager.default.removeItem(at: filePath)
+                SNMLogger.info("Removed disk image: \(oldestKey)")
+            } catch {
+                SNMLogger.error("Failed to remove disk image: \(oldestKey): \(error)")
+            }
         }
     }
 
     func printDiskCacheDirectory() {
         let cacheDirectory = ImageNSCacheManager.shared.cacheDirectoryPath
-        print("Disk cache directory: \(cacheDirectory.path)")
+        SNMLogger.info("Disk cache directory: \(cacheDirectory.path)")
 
         if let contents = try? FileManager.default.contentsOfDirectory(atPath: cacheDirectory.path) {
-            print("Disk cache contents: \(contents)")
+            SNMLogger.info("Disk cache contents: \(contents)")
         }
     }
 }
