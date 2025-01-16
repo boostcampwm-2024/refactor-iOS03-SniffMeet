@@ -79,9 +79,9 @@ actor DiskCacheManager {
     }
 }
 
-final class ImageNSCacheManager {
-    static let shared = ImageNSCacheManager()
-    
+final class CacheManager {
+    static let shared = CacheManager()
+
     private let cache: NSCache<NSString, CacheableImage>
     private let diskCacheManager: DiskCacheManager
 
@@ -122,7 +122,7 @@ final class ImageNSCacheManager {
     }
 }
 
-extension ImageNSCacheManager: ImageCacheable {
+extension CacheManager: ImageCacheable {
     func save(urlString: String, lastModified: String?, imageData: Data?) async {
         guard let lastModified,
               let imageData else { return }
