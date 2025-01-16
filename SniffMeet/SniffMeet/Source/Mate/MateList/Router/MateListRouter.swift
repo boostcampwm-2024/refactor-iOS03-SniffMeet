@@ -60,12 +60,20 @@ extension MateListRouter: MateListBuildable {
             networkProvider: SNMNetworkProvider()),
             cacheManager: ImageNSCacheManager.shared
         )
+        let mpcManager = MPCManager(yourName: String(UUID().uuidString.suffix(8)))
+        let niManager = NIManager(mpcManager: mpcManager)
+        let tryProfileDropUseCase: TryProfileDropUseCase =
+        TryProfileDropUseCaseImpl(dataManager: LocalDataManager(), niManager: niManager, mpcManager: mpcManager)
+        let quitProfileDropUseCase: QuitProfileDropUseCase = QuitProfileDropUseCaseImpl(niManager: niManager)
         let view: MateListViewable & UIViewController = MateListViewController()
         let presenter: MateListPresentable & MateListInteractorOutput =
         MateListPresenter()
         let interactor: MateListInteractable = MateListInteractor(
             requestMateListUseCase: requestMateListUseCase,
-            requestProfileImageUseCase: requestProfileImageUseCase)
+            requestProfileImageUseCase: requestProfileImageUseCase,
+            tryProfileDropUseCase: tryProfileDropUseCase,
+            quitProfileDropUseCase: quitProfileDropUseCase
+        )
 
         let router: MateListRoutable & MateListBuildable = MateListRouter()
 
