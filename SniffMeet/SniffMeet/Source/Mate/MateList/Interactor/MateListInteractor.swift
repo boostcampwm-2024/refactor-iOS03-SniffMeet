@@ -79,6 +79,9 @@ final class MateListInteractor: MateListInteractable {
     }
     
     func tryProfileDrop() {
+        if tryProfileDropUseCase.triedBefore {
+            tryProfileDropUseCase.reset()
+        }
         tryProfileDropUseCase.execute()
     }
     

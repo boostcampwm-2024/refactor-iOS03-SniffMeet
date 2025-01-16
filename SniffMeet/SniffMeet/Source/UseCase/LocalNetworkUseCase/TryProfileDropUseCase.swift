@@ -14,9 +14,11 @@ protocol TryProfileDropUseCase {
     var isNIConnected: CurrentValueSubject<Bool, Never> { get set }
     var transmissionFlag: Set<String> { get set }
     var isTransistioned: Bool { get set }
+    var triedBefore: Bool { get set }
 
     func execute()
     func loadProfileData()
+    func reset()
 }
 
 final class TryProfileDropUseCaseImpl: NSObject, TryProfileDropUseCase {
@@ -25,10 +27,11 @@ final class TryProfileDropUseCaseImpl: NSObject, TryProfileDropUseCase {
     var transmissionFlag: Set<String>
     var isTransistioned: Bool = false
     let lock = NSLock()
+    var triedBefore: Bool = false
 
     let dataManager: DataLoadable
-    let niManager: NIManager
-    let mpcManager: MPCManager
+    private var niManager: NIManager
+    private var mpcManager: MPCManager
     let encoder: JSONEncoder
     let decoder: JSONDecoder
     var profileData: Data? = nil
@@ -48,8 +51,20 @@ final class TryProfileDropUseCaseImpl: NSObject, TryProfileDropUseCase {
         
         super.init()
         niManager.niSession?.delegate = self
-        niManager.mpcManager.session.delegate = self
+        mpcManager.session.delegate = self
         encodeFlagData()
+    }
+    func reset() {
+        isNIConnected.value = false
+        profilePublisher.value = nil
+        transmissionFlag = []
+        isTransistioned = false
+        
+        mpcManager = MPCManager()
+        niManager = NIManager(mpcManager: mpcManager)
+        
+        niManager.niSession?.delegate = self
+        mpcManager.session.delegate = self
     }
     
     func encodeFlagData() {
@@ -64,6 +79,7 @@ final class TryProfileDropUseCaseImpl: NSObject, TryProfileDropUseCase {
     }
     
     func execute()  {
+        triedBefore = true
         loadProfileData()
         niManager.mpcManager.isAvailableToBeConnected = true
     }
@@ -127,7 +143,7 @@ extension TryProfileDropUseCaseImpl: MCSessionDelegate {
                 transmissionFlag.insert(message)
                 lock.unlock()
             }
-            if transmissionFlag.count == 1 && isTransistioned {
+            if transmissionFlag.contains( Context.peerReceived) && isTransistioned {
                 niManager.endSession()
                 isTransistioned = false
             }
@@ -175,12 +191,12 @@ extension TryProfileDropUseCaseImpl: NISessionDelegate {
         if distance > Context.minDistance && distance < Context.maxDistance {
             guard let profileData else { return }
             SNMLogger.log("거리와 방향 조건 만족")
-            if !transmissionFlag.contains(Context.peerReceived)  {
+            if !transmissionFlag.contains(Context.peerReceived) {
                 // 프로필 데이터 송신
                 Task {
                     SNMLogger.log("강아지 프로필 데이터 전송 ")
                     mpcManager.send(data: profileData)
-                    try await Task.sleep(nanoseconds: 6000000000)
+                    try await Task.sleep(nanoseconds: 3000000000)
                 }
             }
         }
