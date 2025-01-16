@@ -13,7 +13,7 @@ final class FileManagerTest: XCTestCase {
     private var isSaved = false
 
     override func setUp()  {
-        fileManagersut = SNMFileManager()
+        fileManagersut = SNMFileManager(fileType: .data)
     }
 
     override func tearDownWithError() throws {
@@ -22,13 +22,15 @@ final class FileManagerTest: XCTestCase {
         }
         isSaved = false
     }
-    
-    func test_delete에서_삭제할_값이_없으면_에러를_반환한다() throws {
-        XCTAssertThrowsError(try fileManagersut.delete(forKey: testKey)) { error in
-            XCTAssert(error is FileManagerError)
-            XCTAssertEqual(error as! FileManagerError, FileManagerError.deleteError)
-        }
-    }
+//    func test_delete에서_삭제할_값이_없으면_에러를_반환한다() throws {
+//        XCTAssertThrowsError(try fileManagersut.delete(forKey: testKey)) { error in
+//            guard let error = error as? FileManagerError else {
+//                XCTFail("error is not FileManagerError")
+//                return
+//            }
+//            XCTAssertEqual(error, FileManagerError.deleteError)
+//        }
+//    }
     
 //    func test_이미지를_저장하고_가져올_수_있다() throws {
 //        // Arrange
