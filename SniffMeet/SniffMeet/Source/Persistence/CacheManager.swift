@@ -22,26 +22,32 @@ actor DiskCacheManager {
 
     init(cacheDirectoryPath: URL) {
         self.cacheDirectoryPath = cacheDirectoryPath
-        if let content = try? FileManager.default.contentsOfDirectory(atPath: cacheDirectoryPath.path) {
+        if let content = try? FileManager
+            .default
+            .contentsOfDirectory(atPath: cacheDirectoryPath.path) {
             usageOrder.append(contentsOf: content)
         }
     }
 
-    func saveToDist(urlString: String, cacheableImage: CacheableImage) async throws {
+    func saveToDisk(urlString: String, cacheableImage: CacheableImage) async throws {
         let data = try encoder.encode(cacheableImage)
 
         if !FileManager.default.fileExists(atPath: cacheDirectoryPath.path) {
-            try FileManager.default.createDirectory(at: cacheDirectoryPath, withIntermediateDirectories: true, attributes: nil)
+            try FileManager
+                .default
+                .createDirectory(at: cacheDirectoryPath, withIntermediateDirectories: true, attributes: nil)
         }
         try data.write(to: cacheDirectoryPath.appendingPathComponent(urlString))
         await updateDiskUsageOrder(urlString: urlString)
         await removeOldestDiskImage()
-        printDiskCacheDirectory()
+        SNMLogger.info("Disk cache usages: \(usageOrder)")
     }
 
-    func loadFromDist(urlString: String) async throws -> CacheableImage? {
+    func loadFromDisk(urlString: String) async throws -> CacheableImage? {
         let filePath = cacheDirectoryPath.appendingPathComponent(urlString)
-        guard FileManager.default.fileExists(atPath: filePath.path) else { return nil }
+        guard FileManager
+            .default
+            .fileExists(atPath: filePath.path) else { return nil }
 
         let data = try Data(contentsOf: filePath)
         await updateDiskUsageOrder(urlString: urlString)
@@ -54,7 +60,6 @@ actor DiskCacheManager {
     }
 
     private func removeOldestDiskImage() async {
-        SNMLogger.info("usageOrderCount: \(usageOrder.count)")
         while usageOrder.count > cacheLimit {
             guard let oldestKey = usageOrder.first else { return }
             usageOrder.removeFirst()
@@ -68,20 +73,13 @@ actor DiskCacheManager {
             }
         }
     }
+}
 
-    private func printDiskCacheDirectory() {
-        SNMLogger.info("Disk cache directory: \(cacheDirectoryPath.path)")
-
-        if let contents = try? FileManager.default.contentsOfDirectory(atPath: cacheDirectoryPath.path) {
-            SNMLogger.info("Disk cache contents: \(contents)")
-            SNMLogger.info("Disk cache usages: \(usageOrder)")
-        }
-    }
+extension CacheManager {
+    static let shared = CacheManager()
 }
 
 final class CacheManager {
-    static let shared = CacheManager()
-
     private let cache: NSCache<NSString, CacheableImage>
     private let diskCacheManager: DiskCacheManager
 
@@ -102,7 +100,7 @@ final class CacheManager {
     
     func saveDiskCache(urlString: String, cacheableImage: CacheableImage) async {
         do {
-            try await diskCacheManager.saveToDist(urlString: urlString, cacheableImage: cacheableImage)
+            try await diskCacheManager.saveToDisk(urlString: urlString, cacheableImage: cacheableImage)
         } catch {
             SNMLogger.error("CacheManager-saveDiskCache: \(error.localizedDescription) ")
         }
@@ -114,7 +112,7 @@ final class CacheManager {
     
     func imageFromDiskCache(urlString: String) async -> CacheableImage? {
         do {
-            return try await diskCacheManager.loadFromDist(urlString: urlString)
+            return try await diskCacheManager.loadFromDisk(urlString: urlString)
         } catch {
             SNMLogger.error("CacheManager-imageFromDiskCache: \(error.localizedDescription) ")
             return nil
