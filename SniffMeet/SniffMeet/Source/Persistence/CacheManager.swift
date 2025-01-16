@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import OrderedCollections
 
 protocol ImageCacheable {
     func save(urlString: String, lastModified: String?, imageData: Data?) async
@@ -15,14 +16,14 @@ protocol ImageCacheable {
 actor DiskCacheManager {
     private let encoder = JSONEncoder()
     private let decoder = JSONDecoder()
-    private var usageOrder: [String] = []
+    private var usageOrder: OrderedSet<String> = []
     private let cacheLimit: Int = 50
     private let cacheDirectoryPath: URL
 
     init(cacheDirectoryPath: URL) {
         self.cacheDirectoryPath = cacheDirectoryPath
         if let content = try? FileManager.default.contentsOfDirectory(atPath: cacheDirectoryPath.path) {
-            usageOrder = content
+            usageOrder.append(contentsOf: content)
         }
     }
 
@@ -48,9 +49,7 @@ actor DiskCacheManager {
     }
 
     private func updateDiskUsageOrder(urlString: String) async {
-        if let index = usageOrder.firstIndex(of: urlString) {
-            usageOrder.remove(at: index)
-        }
+        usageOrder.remove(urlString)
         usageOrder.append(urlString)
     }
 
@@ -75,6 +74,7 @@ actor DiskCacheManager {
 
         if let contents = try? FileManager.default.contentsOfDirectory(atPath: cacheDirectoryPath.path) {
             SNMLogger.info("Disk cache contents: \(contents)")
+            SNMLogger.info("Disk cache usages: \(usageOrder)")
         }
     }
 }
