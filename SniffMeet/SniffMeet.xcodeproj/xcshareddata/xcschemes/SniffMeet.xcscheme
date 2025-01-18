@@ -42,6 +42,9 @@
          <TestPlanReference
             reference = "container:TestPlan/SNMTestplan.xctestplan">
          </TestPlanReference>
+         <TestPlanReference
+            reference = "container:TestPlan/SNMUtilityTestPlan.xctestplan">
+         </TestPlanReference>
       </TestPlans>
       <Testables>
          <TestableReference
@@ -52,6 +55,17 @@
                BlueprintIdentifier = "FD69B1B92CE3BCDC009D71DC"
                BuildableName = "SNMPersistenceTests.xctest"
                BlueprintName = "SNMPersistenceTests"
+               ReferencedContainer = "container:SniffMeet.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "A24B1F242D3C32960012B860"
+               BuildableName = "SNMUtilityTests.xctest"
+               BlueprintName = "SNMUtilityTests"
                ReferencedContainer = "container:SniffMeet.xcodeproj">
             </BuildableReference>
          </TestableReference>
