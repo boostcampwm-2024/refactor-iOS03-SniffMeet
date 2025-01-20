@@ -12,6 +12,25 @@ struct DogProfileDTO: Codable {
     let name: String
     let keywords: [Keyword]
     var profileImage: Data?
+    
+    init(id: UUID, name: String, keywords: [Keyword], profileImage: Data? = nil) {
+        self.id = id
+        self.name = name
+        self.keywords = keywords
+        self.profileImage = profileImage
+    }
+    init(dogDTO: DogDTO) {
+        id = dogDTO.id
+        name = dogDTO.name
+        keywords = dogDTO.keywords
+    }
+}
+
+struct DogDTO: Codable {
+    let id: UUID
+    let name: String
+    let keywords: [Keyword]
+    var profileImage: String?
 }
 
 extension DogProfileDTO {

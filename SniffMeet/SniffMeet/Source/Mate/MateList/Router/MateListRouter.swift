@@ -11,7 +11,7 @@ protocol MateListRoutable: Routable {
     var presenter: (any MateListPresentable)? { get }
     func presentWalkRequestView(mateListView: any MateListViewable, mate: Mate)
     func showAlert(mateListView: any MateListViewable, title: String, message: String)
-    func showMateRequestView(mateListView: any MateListViewable, data: DogProfileDTO)
+    func showMateRequestView(mateListView: any MateListViewable, data: DogDTO)
 }
 
 protocol MateListBuildable {
@@ -41,7 +41,7 @@ final class MateListRouter: MateListRoutable {
         alertVC.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         mateListView.present(alertVC, animated: true, completion: nil)
     }
-    func showMateRequestView(mateListView: any MateListViewable, data: DogProfileDTO) {
+    func showMateRequestView(mateListView: any MateListViewable, data: DogDTO) {
         guard let mateListView = mateListView as? UIViewController else { return }
         let requestMateViewController = RequestMateRouter.createRequestMateModule(profile: data)
         let transitionDelegate = ProfileDropTransitionDelegate()
@@ -63,7 +63,10 @@ extension MateListRouter: MateListBuildable {
         let mpcManager = MPCManager()
         let niManager = NIManager(mpcManager: mpcManager)
         let tryProfileDropUseCase: TryProfileDropUseCase =
-        TryProfileDropUseCaseImpl(dataManager: LocalDataManager(), niManager: niManager, mpcManager: mpcManager)
+        TryProfileDropUseCaseImpl(
+            dataManager: UserDefaultsManager.shared,
+            niManager: niManager,
+            mpcManager: mpcManager)
         let quitProfileDropUseCase: QuitProfileDropUseCase = QuitProfileDropUseCaseImpl(niManager: niManager)
         let view: MateListViewable & UIViewController = MateListViewController()
         let presenter: MateListPresentable & MateListInteractorOutput =

@@ -25,7 +25,7 @@ protocol MateListPresentable: AnyObject {
 protocol MateListInteractorOutput: AnyObject {
     func didFetchMateList(mateList: [Mate])
     func didFetchProfileImage(id: UUID, imageData: Data?)
-    func receiveProfileData(_ data: DogProfileDTO)
+    func receiveProfileData(_ data: DogDTO)
     func didConnectNISession()
     func failToConnectNISession()
 }
@@ -82,7 +82,7 @@ final class MateListPresenter: MateListPresentable {
         )
     }
 
-    func receiveProfileData(_ data: DogProfileDTO) {
+    func receiveProfileData(_ data: DogDTO) {
         guard let view else { return }
         router?.showMateRequestView(mateListView: view, data: data)
     }
@@ -109,7 +109,7 @@ extension MateListPresenter: MateListInteractorOutput {
     }
     
     func failToConnectNISession() {
-        view?.changeMPCButtonState(to: .failure)
+        view?.changeMPCButtonState(to: .normal)
     }
 }
 
