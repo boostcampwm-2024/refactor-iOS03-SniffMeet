@@ -8,7 +8,7 @@
 import Foundation
 
 protocol RequestProfileImageUseCase {
-    func execute(fileName: String) async throws -> Data?
+    func execute(fileName: String) async -> Data?
 }
 
 struct RequestProfileImageUseCaseImpl: RequestProfileImageUseCase {
@@ -23,8 +23,8 @@ struct RequestProfileImageUseCaseImpl: RequestProfileImageUseCase {
         self.cacheManager = cacheManager
     }
 
-    func execute(fileName: String) async throws -> Data? {
-        if let cacheableImage = cacheManager.image(urlString: fileName) { // 캐시에 있을 때
+    func execute(fileName: String) async -> Data? {
+        if let cacheableImage = await cacheManager.image(urlString: fileName) { // 캐시에 있을 때
             do {
                 let remoteImage = try await remoteImageManager.download(
                     fileName: fileName,
@@ -34,7 +34,7 @@ struct RequestProfileImageUseCaseImpl: RequestProfileImageUseCase {
                     SNMLogger.log("not modified")
                     return cacheableImage.imageData
                 } else {
-                    cacheManager.save(urlString: fileName,
+                    await cacheManager.save(urlString: fileName,
                                                  lastModified: remoteImage.lastModified,
                                                  imageData: remoteImage.imageData)
                     return remoteImage.imageData!
@@ -49,7 +49,7 @@ struct RequestProfileImageUseCaseImpl: RequestProfileImageUseCase {
                     fileName: fileName,
                     lastModified: ""
                 )
-                cacheManager.save(urlString: fileName,
+                await cacheManager.save(urlString: fileName,
                                              lastModified: remoteImage.lastModified,
                                              imageData: remoteImage.imageData)
                 return remoteImage.imageData

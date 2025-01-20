@@ -49,7 +49,7 @@ extension RequestWalkRouter: RequestWalkBuildable {
         RequestProfileImageUseCase = RequestProfileImageUseCaseImpl(
             remoteImageManager: SupabaseStorageManager(
             networkProvider: SNMNetworkProvider()),
-            cacheManager: ImageNSCacheManager.shared
+            cacheManager: CacheManager.shared
         )
         let loadInfoUseCase: LoadUserInfoUseCase = LoadUserInfoUseCaseImpl(
             dataLoadable: LocalDataManager(),
