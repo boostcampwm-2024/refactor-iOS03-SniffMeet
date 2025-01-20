@@ -96,8 +96,8 @@
 		A24082672CEB2539009109A0 /* SupabaseSessionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24082662CEB2539009109A0 /* SupabaseSessionResponse.swift */; };
 		A24082702CEB27DE009109A0 /* SupabaseAuthRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A240826F2CEB27DE009109A0 /* SupabaseAuthRequest.swift */; };
 		A24082722CEB36B8009109A0 /* SupabaseTokenRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24082712CEB36B8009109A0 /* SupabaseTokenRequest.swift */; };
-		A24B1F2F2D3C33500012B860 /* ImageSampleable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24B1F2E2D3C33500012B860 /* ImageSampleable.swift */; };
-		A24B1F302D3C33500012B860 /* ImageSampleable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24B1F2E2D3C33500012B860 /* ImageSampleable.swift */; };
+		A24B1F2F2D3C33500012B860 /* ImageSampler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24B1F2E2D3C33500012B860 /* ImageSampler.swift */; };
+		A24B1F302D3C33500012B860 /* ImageSampler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24B1F2E2D3C33500012B860 /* ImageSampler.swift */; };
 		A24B1F322D3C33660012B860 /* Extension + CGImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24B1F312D3C33660012B860 /* Extension + CGImage.swift */; };
 		A24B1F332D3C33660012B860 /* Extension + CGImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24B1F312D3C33660012B860 /* Extension + CGImage.swift */; };
 		A24B1F382D3C349F0012B860 /* ImageSamplingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24B1F372D3C349F0012B860 /* ImageSamplingTests.swift */; };
@@ -355,7 +355,7 @@
 		A240826F2CEB27DE009109A0 /* SupabaseAuthRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupabaseAuthRequest.swift; sourceTree = "<group>"; };
 		A24082712CEB36B8009109A0 /* SupabaseTokenRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupabaseTokenRequest.swift; sourceTree = "<group>"; };
 		A24B1F252D3C32960012B860 /* SNMUtilityTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SNMUtilityTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		A24B1F2E2D3C33500012B860 /* ImageSampleable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSampleable.swift; sourceTree = "<group>"; };
+		A24B1F2E2D3C33500012B860 /* ImageSampler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSampler.swift; sourceTree = "<group>"; };
 		A24B1F312D3C33660012B860 /* Extension + CGImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension + CGImage.swift"; sourceTree = "<group>"; };
 		A24B1F372D3C349F0012B860 /* ImageSamplingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSamplingTests.swift; sourceTree = "<group>"; };
 		A24B1F392D3C35C60012B860 /* SNMUtilityTestPlan.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = SNMUtilityTestPlan.xctestplan; sourceTree = "<group>"; };
@@ -1726,7 +1726,7 @@
 				995D94252CE32EC1005A47BF /* Extension + Keyboard.swift */,
 				320043962CDF493600D08B6D /* Extension + UIView.swift */,
 				3200438C2CDF3D7F00D08B6D /* Extension + Navigation.swift */,
-				A24B1F2E2D3C33500012B860 /* ImageSampleable.swift */,
+				A24B1F2E2D3C33500012B860 /* ImageSampler.swift */,
 				A24B1F312D3C33660012B860 /* Extension + CGImage.swift */,
 			);
 			path = Helper;
@@ -1965,7 +1965,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A24B1F382D3C349F0012B860 /* ImageSamplingTests.swift in Sources */,
-				A24B1F302D3C33500012B860 /* ImageSampleable.swift in Sources */,
+				A24B1F302D3C33500012B860 /* ImageSampler.swift in Sources */,
 				A24B1F332D3C33660012B860 /* Extension + CGImage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2146,7 +2146,7 @@
 				A2BD4A012CF7AD4300AC72A7 /* RequestMateInfoUseCase.swift in Sources */,
 				FD119F502CED87E500BE22BD /* SelectLocationRouter.swift in Sources */,
 				FD880B602CF4327F0093BEB9 /* SaveProfileImageUseCase.swift in Sources */,
-				A24B1F2F2D3C33500012B860 /* ImageSampleable.swift in Sources */,
+				A24B1F2F2D3C33500012B860 /* ImageSampler.swift in Sources */,
 				320047652CF6B86D00D08B6D /* RespondMateRequestUseCase.swift in Sources */,
 				320047BB2CFD368100D08B6D /* PushNotificationRequest.swift in Sources */,
 				FD331A562CF23C5300F39426 /* WalkLogListViewController.swift in Sources */,
