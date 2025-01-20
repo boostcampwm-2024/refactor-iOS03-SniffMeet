@@ -8,7 +8,7 @@
 import Foundation
 
 protocol RequestProfileImageUseCase {
-    func execute(fileName: String) async throws -> Data?
+    func execute(fileName: String) async -> Data?
 }
 
 struct RequestProfileImageUseCaseImpl: RequestProfileImageUseCase {
@@ -23,7 +23,7 @@ struct RequestProfileImageUseCaseImpl: RequestProfileImageUseCase {
         self.cacheManager = cacheManager
     }
 
-    func execute(fileName: String) async throws -> Data? {
+    func execute(fileName: String) async -> Data? {
         if let cacheableImage = await cacheManager.image(urlString: fileName) { // 캐시에 있을 때
             do {
                 let remoteImage = try await remoteImageManager.download(

@@ -16,7 +16,7 @@ protocol ImageCacheable {
 actor DiskCacheManager {
     private let encoder = JSONEncoder()
     private let decoder = JSONDecoder()
-    private var usageOrder: OrderedSet<String> = []
+    private var fileUsageHistory: OrderedSet<String> = []
     private let cacheLimit: Int = 50
     private let cacheDirectoryPath: URL
 
@@ -25,7 +25,7 @@ actor DiskCacheManager {
         if let content = try? FileManager
             .default
             .contentsOfDirectory(atPath: cacheDirectoryPath.path) {
-            usageOrder.append(contentsOf: content)
+            fileUsageHistory.append(contentsOf: content)
         }
     }
 
@@ -40,7 +40,7 @@ actor DiskCacheManager {
         try data.write(to: cacheDirectoryPath.appendingPathComponent(urlString))
         await updateDiskUsageOrder(urlString: urlString)
         await removeOldestDiskImage()
-        SNMLogger.info("Disk cache usages: \(usageOrder)")
+        SNMLogger.info("Disk cache usages: \(fileUsageHistory)")
     }
 
     func loadFromDisk(urlString: String) async throws -> CacheableImage? {
@@ -55,14 +55,14 @@ actor DiskCacheManager {
     }
 
     private func updateDiskUsageOrder(urlString: String) async {
-        usageOrder.remove(urlString)
-        usageOrder.append(urlString)
+        fileUsageHistory.remove(urlString)
+        fileUsageHistory.append(urlString)
     }
 
     private func removeOldestDiskImage() async {
-        while usageOrder.count > cacheLimit {
-            guard let oldestKey = usageOrder.first else { return }
-            usageOrder.removeFirst()
+        while fileUsageHistory.count > cacheLimit {
+            guard let oldestKey = fileUsageHistory.first else { return }
+            fileUsageHistory.removeFirst()
 
             let filePath = cacheDirectoryPath.appendingPathComponent(oldestKey)
             do {
