@@ -12,12 +12,13 @@ protocol RequestMatePresentable: AnyObject {
     var interactor: RequestMateInteractable? { get set }
     var router: RequestMateRoutable? { get set }
 
+    func viewDidLoad(fileName: String)
     func closeTheView()
     func didTapAcceptButton(id: UUID) async
 }
 
 protocol RequestMateInteractorOutput: AnyObject {
-
+    func showProfileImage(imageData: Data?)
 }
 
 final class RequestMatePresenter: RequestMatePresentable {
@@ -34,6 +35,15 @@ final class RequestMatePresenter: RequestMatePresentable {
         self.interactor = interactor
         self.router = router
     }
+    func viewDidLoad(fileName: String) {
+        do {
+            Task {
+               try await interactor?.fetchDogProfileImage(fileName: fileName)
+            }
+        } catch {
+            SNMLogger.error("Fail to fetch image(RequestMateView): \(error.localizedDescription)")
+        }
+    }
 
     func closeTheView() {
         if let view {
@@ -47,5 +57,7 @@ final class RequestMatePresenter: RequestMatePresentable {
 }
 
 extension RequestMatePresenter: RequestMateInteractorOutput {
-
+    func showProfileImage(imageData: Data?) {
+        view?.configureProfileImage(imageData: imageData)
+    }
 }

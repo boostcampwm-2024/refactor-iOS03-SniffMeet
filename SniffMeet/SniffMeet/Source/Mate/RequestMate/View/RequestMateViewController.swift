@@ -10,6 +10,8 @@ import UIKit
 
 protocol RequestMateViewable: AnyObject {
     var presenter: RequestMatePresentable? { get set }
+    
+    func configureProfileImage(imageData: Data?)
 }
 
 final class RequestMateViewController: BaseViewController, RequestMateViewable {
@@ -23,27 +25,25 @@ final class RequestMateViewController: BaseViewController, RequestMateViewable {
     private var declineButton: UIButton = UIButton(type: .system)
     private var acceptButton = PrimaryButton(title: Context.acceptTitle)
     private var keywords: [Keyword] = []
-    private let profile: DogProfileDTO
+    private var profile: DogProfileDTO
+    private let imageURL: String?
     private var cancellables = Set<AnyCancellable>()
 
-    init(profile: DogProfileDTO) {
-        self.profile = profile
+    init(dogDTO: DogDTO) {
+        profile = DogProfileDTO(dogDTO: dogDTO)
+        imageURL = dogDTO.profileImage
         super.init()
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        if let imageURL {
+            presenter?.viewDidLoad(fileName: imageURL)
+        }
     }
 
     override func configureAttributes() {
-        if let profileImage = profile.profileImage {
-            profileImageView.image =  UIImage(data: profileImage)
-        } else {
-            profileImageView.image = UIImage.imagePlaceholder
-        }
-        profileImageView.contentMode = .scaleAspectFill
-        profileImageView.translatesAutoresizingMaskIntoConstraints = false
-        profileImageView.isUserInteractionEnabled = false
+        configureProfileImage(imageData: profile.profileImage)
         nameLabel.text = profile.name
         nameLabel.textColor = SNMColor.white
         nameLabel.font = SNMFont.title1
@@ -161,11 +161,23 @@ final class RequestMateViewController: BaseViewController, RequestMateViewable {
         acceptButton.publisher(event: .touchUpInside)
             .sink { [weak self] in
                 Task {
-                    await self?.presenter?.didTapAcceptButton(id: self?.profile.id ?? DogProfileDTO.example.id)
+                    await self?.presenter?.didTapAcceptButton(id: self?.profile.id ?? UUID())
                     self?.presenter?.closeTheView()
                 }
             }
             .store(in: &cancellables)
+    }
+    func configureProfileImage(imageData: Data?) {
+        Task {@MainActor [weak self] in
+            if let imageData {
+                self?.profileImageView.image =  UIImage(data: imageData)
+            } else {
+                self?.profileImageView.image = UIImage.imagePlaceholder
+            }
+            self?.profileImageView.contentMode = .scaleAspectFill
+            self?.profileImageView.translatesAutoresizingMaskIntoConstraints = false
+            self?.profileImageView.isUserInteractionEnabled = false
+        }
     }
 }
 
