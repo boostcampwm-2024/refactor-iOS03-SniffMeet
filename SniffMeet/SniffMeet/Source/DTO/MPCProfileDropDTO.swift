@@ -9,6 +9,6 @@ import Foundation
 
 struct MPCProfileDropDTO: Codable {
     let token: Data?
-    let profile: DogProfileDTO?
+    let profile: DogDTO?
     let transitionMessage: String?
 }

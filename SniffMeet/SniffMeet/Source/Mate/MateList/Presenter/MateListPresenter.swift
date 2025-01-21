@@ -19,16 +19,18 @@ protocol MateListPresentable: AnyObject {
     func didTabAccessoryButton(mate: Mate)
     func showAlertConnected()
     func showAlertDisconnected()
-    func profileData(_ data: DogProfileDTO)
+    func startProfileDrop()
 }
 
 protocol MateListInteractorOutput: AnyObject {
     func didFetchMateList(mateList: [Mate])
     func didFetchProfileImage(id: UUID, imageData: Data?)
+    func receiveProfileData(_ data: DogDTO)
+    func didConnectNISession()
+    func failToConnectNISession()
 }
 
 final class MateListPresenter: MateListPresentable {
-    
     weak var view: (any MateListViewable)?
     var interactor: (any MateListInteractable)?
     var router: (any MateListRoutable)?
@@ -80,9 +82,15 @@ final class MateListPresenter: MateListPresentable {
         )
     }
 
-    func profileData(_ data: DogProfileDTO) {
+    func receiveProfileData(_ data: DogDTO) {
         guard let view else { return }
         router?.showMateRequestView(mateListView: view, data: data)
+    }
+    func startProfileDrop() {
+        interactor?.tryProfileDrop()
+    }
+    func quitProfileDrop() {
+        interactor?.quitProfileDrop()
     }
 }
 
@@ -95,10 +103,17 @@ extension MateListPresenter: MateListInteractorOutput {
         guard let imageData else { return }
         output.profileImageData.send((id, imageData))
     }
+    func didConnectNISession() {
+        //showAlertConnected()
+        view?.changeMPCButtonState(to: .success)
+    }
+    
+    func failToConnectNISession() {
+        view?.changeMPCButtonState(to: .normal)
+    }
 }
 
 // MARK: - MateListPresenterOutput
-
 protocol MateListPresenterOutput {
     var mates: CurrentValueSubject<[Mate], Never> { get }
     var profileImageData: PassthroughSubject<(UUID, Data?), Never> { get }
