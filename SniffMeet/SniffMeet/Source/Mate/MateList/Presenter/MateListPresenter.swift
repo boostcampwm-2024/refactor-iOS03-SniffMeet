@@ -18,8 +18,14 @@ protocol MateListPresentable: AnyObject {
     func didTabAccessoryButton(mate: Mate)
     func showAlertConnected()
     func showAlertDisconnected()
-    func profileData(_ data: DogProfileDTO)
     func didScrollToBottom()
+    func startProfileDrop()
+}
+
+protocol MateListInteractorOutput: AnyObject {
+    func receiveProfileData(_ data: DogDTO)
+    func didConnectNISession()
+    func failToConnectNISession()
 }
 
 final class MateListPresenter: MateListPresentable {
@@ -73,9 +79,16 @@ final class MateListPresenter: MateListPresentable {
         )
     }
 
-    func profileData(_ data: DogProfileDTO) {
+    func receiveProfileData(_ data: DogDTO) {
         guard let view else { return }
         router?.showMateRequestView(mateListView: view, data: data)
+    }
+
+    func startProfileDrop() {
+        interactor?.tryProfileDrop()
+    }
+    func quitProfileDrop() {
+        interactor?.quitProfileDrop()
     }
 
     func didScrollToBottom() {
@@ -146,8 +159,18 @@ final class MateListPresenter: MateListPresentable {
     }
 }
 
-// MARK: - MateListPresenterOutput
+extension MateListPresenter: MateListInteractorOutput {
+    func didConnectNISession() {
+        //showAlertConnected()
+        view?.changeMPCButtonState(to: .success)
+    }
 
+    func failToConnectNISession() {
+        view?.changeMPCButtonState(to: .normal)
+    }
+}
+
+// MARK: - MateListPresenterOutput
 protocol MateListPresenterOutput {
     var mates: CurrentValueSubject<[Mate], Never> { get }
     var profileImageData: PassthroughSubject<(UUID, Data?), Never> { get }

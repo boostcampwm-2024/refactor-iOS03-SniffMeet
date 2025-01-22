@@ -14,7 +14,7 @@ protocol RequestMateRoutable: AnyObject {
 }
 
 protocol RequestMateBuildable {
-    static func createRequestMateModule(profile: DogProfileDTO) -> UIViewController
+    static func createRequestMateModule(profile: DogDTO) -> UIViewController
 }
 
 final class RequestMateRouter: RequestMateRoutable {
@@ -29,13 +29,21 @@ final class RequestMateRouter: RequestMateRoutable {
 }
 
 extension RequestMateRouter: RequestMateBuildable {
-    static func createRequestMateModule(profile: DogProfileDTO) -> UIViewController {
+    static func createRequestMateModule(profile: DogDTO) -> UIViewController {
         let respondMateRequestUseCase: RespondMateRequestUseCase = RespondMateRequestUseCaseImpl(
             localDataManager: LocalDataManager(),
             remoteDataManger: SupabaseDatabaseManager.shared)
-        let view = RequestMateViewController(profile: profile)
+        let requestProfileImageUseCase: RequestProfileImageUseCase =
+        RequestProfileImageUseCaseImpl(
+            remoteImageManager: SupabaseStorageManager(
+                networkProvider: SNMNetworkProvider()
+            ),
+            cacheManager: CacheManager.shared)
+        let view = RequestMateViewController(dogDTO: profile)
         let presenter: RequestMatePresentable & RequestMateInteractorOutput = RequestMatePresenter()
-        let interactor = RequestMateInteractor(respondMateRequestUseCase: respondMateRequestUseCase)
+        let interactor = RequestMateInteractor(
+            respondMateRequestUseCase: respondMateRequestUseCase,
+            requestProfileImageUsecase: requestProfileImageUseCase)
         let router: RequestMateRoutable & RequestMateBuildable = RequestMateRouter()
 
         view.presenter = presenter

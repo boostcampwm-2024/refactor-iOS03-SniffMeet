@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "0BD94E5F-04F3-401C-A26D-B329E07EE2A1",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "testTimeoutsEnabled" : true
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:SniffMeet.xcodeproj",
+        "identifier" : "A24B1F242D3C32960012B860",
+        "name" : "SNMUtilityTests"
+      }
+    }
+  ],
+  "version" : 1
+}

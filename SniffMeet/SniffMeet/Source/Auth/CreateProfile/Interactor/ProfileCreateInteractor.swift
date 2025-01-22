@@ -12,7 +12,7 @@ protocol ProfileCreateInteractable: AnyObject {
     var saveUserInfoUseCase: SaveUserInfoUseCase { get set }
     var saveProfileImageUseCase: SaveProfileImageUseCase { get }
 
-    func signInWithProfileData(dogInfo: UserInfo, imageData: (png: Data?, jpg: Data?))
+    func signInWithProfileData(dogInfo: UserInfo, imageData: Data?)
     func convertImageToPNGData(image: UIImage?) -> Data?
     func convertImageToJPGData(image: UIImage?) -> Data?
 }
@@ -35,26 +35,38 @@ final class ProfileCreateInteractor: ProfileCreateInteractable {
         self.saveUserInfoRemoteUseCase = saveUserInfoRemoteUseCase
     }
 
-    func signInWithProfileData(dogInfo: UserInfo, imageData: (png: Data?, jpg: Data?)) {
+    func signInWithProfileData(dogInfo: UserInfo, imageData: Data?) {
         Task {
             do {
                 try await SupabaseAuthManager.shared.signInAnonymously()
-                try saveUserInfoUseCase.execute(dog: UserInfo(
-                    name: dogInfo.name,
-                    age: dogInfo.age,
-                    sex: dogInfo.sex,
-                    sexUponIntake: dogInfo.sexUponIntake,
-                    size: dogInfo.size,
-                    keywords: dogInfo.keywords,
-                    nickname: dogInfo.nickname,
-                    profileImage: imageData.png)
-                )
-                var fileName: String? = nil
-                if let jpgData = imageData.jpg {
-                    fileName = try await saveProfileImageUseCase.execute(
-                        imageData: jpgData
-                    )
+                let fileName = try await withThrowingTaskGroup(of: String?.self) { [weak self] group in
+                    group.addTask {
+                        try self?.saveUserInfoUseCase.execute(dog: UserInfo(
+                            name: dogInfo.name,
+                            age: dogInfo.age,
+                            sex: dogInfo.sex,
+                            sexUponIntake: dogInfo.sexUponIntake,
+                            size: dogInfo.size,
+                            keywords: dogInfo.keywords,
+                            nickname: dogInfo.nickname,
+                            profileImage: imageData)
+                        )
+                        return nil
+                    }
+                    if let jpgData = imageData {
+                        group.addTask {
+                            return try await self?.saveProfileImageUseCase.execute(imageData: jpgData)
+                        }
+                    }
+                    var savedFileName: String? = nil
+                    for try await result in group {
+                        if let name = result {
+                            savedFileName = name
+                        }
+                    }
+                    return savedFileName
                 }
+
                 guard let userID = SessionManager.shared.session?.user?.userID else {
                     return
                 }

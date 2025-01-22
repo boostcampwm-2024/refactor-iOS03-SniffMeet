@@ -4,12 +4,12 @@
 //
 //  Created by Kelly Chui on 11/21/24.
 //
-
 import Combine
 import UIKit
 
 protocol MateListViewable: AnyObject {
     var presenter: (any MateListPresentable)? { get set }
+    func changeMPCButtonState(to buttonState: AddMateButton.ButtonState)
 }
 
 final class MateListViewController: BaseViewController, MateListViewable {
@@ -19,10 +19,6 @@ final class MateListViewController: BaseViewController, MateListViewable {
     private var cancellables: Set<AnyCancellable> = []
     private let tableView: UITableView = UITableView()
     private let addMateButton = AddMateButton(title: "새 메이트를 연결하세요")
-    private var mpcManager: MPCManager?
-    private var niManager: NIManager?
-    private var count: Int = 0
-    var dogProfile: DogProfileDTO?
 
     override func viewWillAppear(_ animated: Bool) {
         presenter?.viewWillAppear()
@@ -30,7 +26,6 @@ final class MateListViewController: BaseViewController, MateListViewable {
     }
 
     override func viewDidLoad() {
-        setupMPCManager()
         super.viewDidLoad()
         NotificationCenter.default.addObserver(
             self,
@@ -104,57 +99,8 @@ final class MateListViewController: BaseViewController, MateListViewable {
                       scheduler: RunLoop.main,
                       latest: false)
             .sink { [weak self] _ in
-                self?.mpcManager?.isAvailableToBeConnected = true
-                self?.count = 1
                 self?.addMateButton.buttonState = .connecting
-            }
-            .store(in: &cancellables)
-
-        mpcManager?.$paired
-            .receive(on: RunLoop.main)
-            .sink { [weak self] isPaired in
-                if 1...3 ~= self?.count ?? 0 {
-                    if !isPaired {
-                        self?.addMateButton.buttonState = .failure
-                        self?.presenter?.showAlertDisconnected()
-                    }
-                    self?.addMateButton.buttonState = .connecting
-                }
-                self?.count += 1
-            }
-            .store(in: &cancellables)
-
-        mpcManager?.receivedDataPublisher
-            .receive(on: RunLoop.main)
-            .sink { [weak self] profile in
-                SNMLogger.info("HomeViewController received data: \(profile)")
-                self?.dogProfile = profile
-            }
-            .store(in: &cancellables)
-
-        niManager?.$niPaired
-            .receive(on: RunLoop.main)
-            .sink { [weak self] isPaired in
-                if isPaired {
-                    self?.presenter?.showAlertConnected()
-                    self?.addMateButton.buttonState = .success
-                } else {
-                    self?.addMateButton.buttonState = .failure
-                }
-            }
-            .store(in: &cancellables)
-
-        niManager?.isViewTransitioning
-            .receive(on: RunLoop.main)
-            .sink { [weak self] bool in
-                guard let profile = self?.dogProfile else {
-                    SNMLogger.error("No exist profile")
-                    return
-                }
-                if bool {
-                    SNMLogger.log("isViewTransitioning")
-                    self?.presenter?.profileData(profile)
-                }
+                self?.presenter?.startProfileDrop()
             }
             .store(in: &cancellables)
     }
@@ -173,10 +119,8 @@ final class MateListViewController: BaseViewController, MateListViewable {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: Identifier.mateCellID)
         tableView.separatorStyle = .none
     }
-
-    private func setupMPCManager() {
-        mpcManager = MPCManager(yourName: String(UUID().uuidString.suffix(8)))
-        niManager = NIManager(mpcManager: mpcManager!)
+    func changeMPCButtonState(to buttonState: AddMateButton.ButtonState) {
+        addMateButton.buttonState = buttonState
     }
 }
 

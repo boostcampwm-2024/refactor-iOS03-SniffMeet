@@ -43,7 +43,7 @@ extension ProcessedWalkModuleBuildable {
                 remoteImageManager: SupabaseStorageManager(
                     networkProvider: SNMNetworkProvider()
                 ),
-                cacheManager: ImageNSCacheManager.shared
+                cacheManager: CacheManager.shared
             )
         )
         let router = ProcessedWalkRouter()
