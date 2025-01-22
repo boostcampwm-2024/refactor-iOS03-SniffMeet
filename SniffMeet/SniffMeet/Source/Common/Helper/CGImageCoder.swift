@@ -8,9 +8,10 @@
 import CoreGraphics
 import Foundation
 import ImageIO
+import UniformTypeIdentifiers
 
-extension CGImage {
-    static func createFromData(data: Data) -> CGImage? {
+struct CGImageCoder {
+    func decode(from data: Data) -> CGImage? {
         let options: [CFString: Any] = [kCGImageSourceShouldCache: false]
         guard let imageSource = CGImageSourceCreateWithData(
             data as CFData,
@@ -21,17 +22,14 @@ extension CGImage {
         return CGImageSourceCreateImageAtIndex(imageSource, 0, nil)
     }
     
-    var jpgData: Data? {
+    func encode(from cgImage: CGImage, as format: UTType) -> Data? {
         guard let mutableData = CFDataCreateMutable(nil, 0),
               let destination = CGImageDestinationCreateWithData(
-                mutableData,
-                "public.jpeg" as CFString,
-                1,
-                nil
+                mutableData, format.identifier as CFString, 1, nil
               ) else {
             return nil
         }
-        CGImageDestinationAddImage(destination, self, nil)
+        CGImageDestinationAddImage(destination, cgImage, nil)
         guard CGImageDestinationFinalize(destination) else { return nil }
         return mutableData as Data
     }

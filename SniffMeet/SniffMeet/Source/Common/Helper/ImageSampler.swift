@@ -18,6 +18,12 @@ protocol ImageSampleable {
 }
 
 final class ImageSampler: ImageSampleable {
+    private let imageCoder: CGImageCoder
+    
+    init(imageCoder: CGImageCoder = CGImageCoder()) {
+        self.imageCoder = imageCoder
+    }
+    
     private func resizeImage(to targetSize: CGSize) -> CGContext? {
         let colorSpace = CGColorSpaceCreateDeviceRGB()
         guard let context = CGContext(
@@ -50,7 +56,7 @@ final class ImageSampler: ImageSampleable {
         targetSize: CGSize,
         croppingTo cropSize: CGSize? = nil
     ) async throws -> Data {
-        guard let cgImage = CGImage.createFromData(data: imageData) else {
+        guard let cgImage = imageCoder.decode(from: imageData) else {
             throw ImageSamplingError.invalidImageData
         }
         
@@ -75,7 +81,7 @@ final class ImageSampler: ImageSampleable {
            let croppedImage = cropCenter(of: downsampledImage, size: cropSize) {
             downsampledImage = croppedImage
         }
-        guard let downsampledImageData = downsampledImage.jpgData else {
+        guard let downsampledImageData = imageCoder.encode(from: downsampledImage, as: .jpeg) else {
             throw ImageSamplingError.downsamplingFailed
         }
         
