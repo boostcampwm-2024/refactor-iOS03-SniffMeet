@@ -49,11 +49,11 @@ final class ProfileCreateInteractor: ProfileCreateInteractable {
                             size: dogInfo.size,
                             keywords: dogInfo.keywords,
                             nickname: dogInfo.nickname,
-                            profileImage: imageData.png)
+                            profileImage: imageData)
                         )
                         return nil
                     }
-                    if let jpgData = imageData.jpg {
+                    if let jpgData = imageData {
                         group.addTask {
                             return try await self?.saveProfileImageUseCase.execute(imageData: jpgData)
                         }

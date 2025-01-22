@@ -11,7 +11,7 @@ protocol MateListInteractable: AnyObject {
     var presenter: MateListInteractorOutput? { get set }
 
     func requestMateList(userID: UUID)
-    func requestProfileImage(id: UUID, imageName: String?)
+    func requestProfileImage(id: UUID, imageName: String)
     func tryProfileDrop()
     func quitProfileDrop()
 }
