@@ -38,7 +38,7 @@ extension RequestMateRouter: RequestMateBuildable {
             remoteImageManager: SupabaseStorageManager(
                 networkProvider: SNMNetworkProvider()
             ),
-            cacheManager: ImageNSCacheManager.shared)
+            cacheManager: CacheManager.shared)
         let view = RequestMateViewController(dogDTO: profile)
         let presenter: RequestMatePresentable & RequestMateInteractorOutput = RequestMatePresenter()
         let interactor = RequestMateInteractor(
