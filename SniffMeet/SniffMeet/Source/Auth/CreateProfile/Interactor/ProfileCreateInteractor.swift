@@ -12,7 +12,7 @@ protocol ProfileCreateInteractable: AnyObject {
     var saveUserInfoUseCase: SaveUserInfoUseCase { get set }
     var saveProfileImageUseCase: SaveProfileImageUseCase { get }
 
-    func signInWithProfileData(dogInfo: UserInfo, imageData: (png: Data?, jpg: Data?))
+    func signInWithProfileData(dogInfo: UserInfo, imageData: Data?)
     func convertImageToPNGData(image: UIImage?) -> Data?
     func convertImageToJPGData(image: UIImage?) -> Data?
 }
@@ -35,7 +35,7 @@ final class ProfileCreateInteractor: ProfileCreateInteractable {
         self.saveUserInfoRemoteUseCase = saveUserInfoRemoteUseCase
     }
 
-    func signInWithProfileData(dogInfo: UserInfo, imageData: (png: Data?, jpg: Data?)) {
+    func signInWithProfileData(dogInfo: UserInfo, imageData: Data?) {
         Task {
             do {
                 try await SupabaseAuthManager.shared.signInAnonymously()
@@ -49,11 +49,11 @@ final class ProfileCreateInteractor: ProfileCreateInteractable {
                             size: dogInfo.size,
                             keywords: dogInfo.keywords,
                             nickname: dogInfo.nickname,
-                            profileImage: imageData.png)
+                            profileImage: imageData)
                         )
                         return nil
                     }
-                    if let jpgData = imageData.jpg {
+                    if let jpgData = imageData {
                         group.addTask {
                             return try await self?.saveProfileImageUseCase.execute(imageData: jpgData)
                         }

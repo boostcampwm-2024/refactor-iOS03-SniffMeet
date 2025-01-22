@@ -11,7 +11,7 @@ protocol MateListInteractable: AnyObject {
     var presenter: MateListInteractorOutput? { get set }
 
     func requestMateList(userID: UUID)
-    func requestProfileImage(id: UUID, imageName: String?)
+    func requestProfileImage(id: UUID, imageName: String)
     func tryProfileDrop()
     func quitProfileDrop()
 }
@@ -47,9 +47,9 @@ final class MateListInteractor: MateListInteractable {
         }
     }
 
-    func requestProfileImage(id: UUID, imageName: String?) {
+    func requestProfileImage(id: UUID, imageName: String) {
         Task { @MainActor in
-            let imageData = try await requestProfileImageUseCase.execute(fileName: imageName ?? "")
+            let imageData = try await requestProfileImageUseCase.execute(fileName: "thumbnail_\(imageName)")
             presenter?.didFetchProfileImage(id: id, imageData: imageData)
         }
     }
