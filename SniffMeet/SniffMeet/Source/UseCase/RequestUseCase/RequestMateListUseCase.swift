@@ -46,6 +46,8 @@ struct RequestMateListUseCaseImpl: RequestMateListUseCase {
             }
         } catch let error as SupabaseDBError where error == .noMoreData {
             throw SNMError(level: .user, error: error)
+        } catch let error as SupabaseAuthError {
+            throw SNMError(level: .user, error: error)
         } catch {
             throw SNMError(level: .developer, error: error)
         }
