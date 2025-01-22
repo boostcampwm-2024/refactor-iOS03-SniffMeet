@@ -44,7 +44,7 @@ RequestProfileImageUseCaseImpl(
             remoteImageManager: SupabaseStorageManager(
                 networkProvider: SNMNetworkProvider()
             ),
-            cacheManager: ImageNSCacheManager.shared
+            cacheManager: CacheManager.shared
         )
         let loadUserUseCase = LoadUserInfoUseCaseImpl(
             dataLoadable: LocalDataManager(),

@@ -10,24 +10,28 @@ import Foundation
 protocol RequestMateInteractable: AnyObject {
     var presenter: (any RequestMateInteractorOutput)? { get set }
 
-    func fetchDogProfile()
+    func fetchDogProfileImage(fileName: String) async throws
     func saveMateInfo(id: UUID) async
 }
 
 final class RequestMateInteractor: RequestMateInteractable {
     weak var presenter: (any RequestMateInteractorOutput)?
     private let respondMateRequestUseCase: RespondMateRequestUseCase
+    private let requestProfileImageUsecase: RequestProfileImageUseCase
 
     init(
         presenter: (any RequestMateInteractorOutput)? = nil,
-        respondMateRequestUseCase: RespondMateRequestUseCase
+        respondMateRequestUseCase: RespondMateRequestUseCase,
+        requestProfileImageUsecase: RequestProfileImageUseCase
     ) {
         self.presenter = presenter
         self.respondMateRequestUseCase = respondMateRequestUseCase
+        self.requestProfileImageUsecase = requestProfileImageUsecase
     }
 
-    func fetchDogProfile() {
-        /// 프로필 데이터 가져오고  presenter의 didFetchDogProfile 호출.
+    func fetchDogProfileImage(fileName: String) async throws {
+        let imageData = try await requestProfileImageUsecase.execute(fileName: fileName)
+        presenter?.showProfileImage(imageData: imageData)
     }
     func saveMateInfo(id: UUID) async {
         await respondMateRequestUseCase.execute(mateId: id, isAccepted: true)
