@@ -124,6 +124,10 @@
 		A2C844D72CDBEF8B007F2970 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		A2F825D12CDF4BA6000C5419 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2F825D02CDF4BA6000C5419 /* HomeViewController.swift */; };
 		A2F825DD2CDFBEB4000C5419 /* ProfileCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2F825DC2CDFBEB4000C5419 /* ProfileCardView.swift */; };
+		FD01D8F52D40AC5300AD4940 /* Extension + UITableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD01D8F42D40AC4100AD4940 /* Extension + UITableViewCell.swift */; };
+		FD01D8F72D40AC8600AD4940 /* TaskSerialQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD01D8F62D40AC8000AD4940 /* TaskSerialQueue.swift */; };
+		FD01D8F82D40AC8600AD4940 /* TaskSerialQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD01D8F62D40AC8000AD4940 /* TaskSerialQueue.swift */; };
+		FD01D8FA2D40ACAF00AD4940 /* Extension + Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD01D8F92D40ACAB00AD4940 /* Extension + Array.swift */; };
 		FD0634262CE596B5003C9D6B /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD0634252CE596B2003C9D6B /* Endpoint.swift */; };
 		FD0634282CE596BD003C9D6B /* SNMRequestConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD0634272CE596BA003C9D6B /* SNMRequestConvertible.swift */; };
 		FD06342A2CE596D0003C9D6B /* NetworkProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD0634292CE596C2003C9D6B /* NetworkProvider.swift */; };
@@ -369,6 +373,9 @@
 		A2F825DC2CDFBEB4000C5419 /* ProfileCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCardView.swift; sourceTree = "<group>"; };
 		FD011EF02D351FCF0071327A /* SNMNetworkTestPlan.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = SNMNetworkTestPlan.xctestplan; sourceTree = "<group>"; };
 		FD011EF22D35203C0071327A /* SNMPersistenceTestPlan.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = SNMPersistenceTestPlan.xctestplan; sourceTree = "<group>"; };
+		FD01D8F42D40AC4100AD4940 /* Extension + UITableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension + UITableViewCell.swift"; sourceTree = "<group>"; };
+		FD01D8F62D40AC8000AD4940 /* TaskSerialQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskSerialQueue.swift; sourceTree = "<group>"; };
+		FD01D8F92D40ACAB00AD4940 /* Extension + Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension + Array.swift"; sourceTree = "<group>"; };
 		FD0634252CE596B2003C9D6B /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
 		FD0634272CE596BA003C9D6B /* SNMRequestConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SNMRequestConvertible.swift; sourceTree = "<group>"; };
 		FD0634292CE596C2003C9D6B /* NetworkProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkProvider.swift; sourceTree = "<group>"; };
@@ -1681,6 +1688,8 @@
 		FDE768872CF7811400B5DE88 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				FD01D8F92D40ACAB00AD4940 /* Extension + Array.swift */,
+				FD01D8F42D40AC4100AD4940 /* Extension + UITableViewCell.swift */,
 				320047DD2CFE9DFB00D08B6D /* Extension + UIApplication.swift */,
 				FD8020FD2CF8C8DA0089B349 /* Extension + UIImage.swift */,
 				FDE7689E2CF7858D00B5DE88 /* Extension + UIViewController.swift */,
@@ -1698,6 +1707,7 @@
 		FDE768882CF7811900B5DE88 /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				FD01D8F62D40AC8000AD4940 /* TaskSerialQueue.swift */,
 				FD880B592CECE8F90093BEB9 /* SNMLogger.swift */,
 			);
 			path = Util;
@@ -1977,11 +1987,13 @@
 				A2F825DD2CDFBEB4000C5419 /* ProfileCardView.swift in Sources */,
 				FD51341F2CEB7AFE002E76F3 /* LoadUserInfoUseCase.swift in Sources */,
 				FD331A582CF23CEC00F39426 /* WalkLogCell.swift in Sources */,
+				FD01D8FA2D40ACAF00AD4940 /* Extension + Array.swift in Sources */,
 				FD5134172CEB738D002E76F3 /* UIControl + Publisher.swift in Sources */,
 				320047BE2CFDE37300D08B6D /* WalkRequestDTO.swift in Sources */,
 				320044852CEC836400D08B6D /* PaddingLabel.swift in Sources */,
 				A2BD49FF2CF7712800AC72A7 /* Keyword.swift in Sources */,
 				A2C328882CE2481900D255AB /* HomeModuleBuilder.swift in Sources */,
+				FD01D8F72D40AC8600AD4940 /* TaskSerialQueue.swift in Sources */,
 				320044712CEB45E000D08B6D /* RequestWalkPresenter.swift in Sources */,
 				995D94262CE32ECE005A47BF /* Extension + Keyboard.swift in Sources */,
 				FD9468D42CFD590700417DC1 /* ProfileEditViewController.swift in Sources */,
@@ -2021,6 +2033,7 @@
 				320044962CED80DA00D08B6D /* RespondWalkRouter.swift in Sources */,
 				FDE768942CF782E900B5DE88 /* WalkAPSDTO.swift in Sources */,
 				320043912CDF3D7F00D08B6D /* KeywordButton.swift in Sources */,
+				FD01D8F52D40AC5300AD4940 /* Extension + UITableViewCell.swift in Sources */,
 				FD11526F2CFB33B6008955C4 /* RespondMapViewController.swift in Sources */,
 				FD119F4C2CED87B000BE22BD /* SelectLocationInteractor.swift in Sources */,
 				FD880B622CF433AF0093BEB9 /* Environment.swift in Sources */,
@@ -2123,6 +2136,7 @@
 				99A5E1B92D302D65003B00A8 /* ImageCacheable.swift in Sources */,
 				320045352CF4353900D08B6D /* SNMFileManager.swift in Sources */,
 				3200453A2CF43F3800D08B6D /* FileManagerTest.swift in Sources */,
+				FD01D8F82D40AC8600AD4940 /* TaskSerialQueue.swift in Sources */,
 				FD69B1C42CE3BCE4009D71DC /* KeychainManager.swift in Sources */,
 				3284D34E2D2F941C000ABC04 /* DataStoragable.swift in Sources */,
 				FD69B1CD2CE3E9BB009D71DC /* KeychainTests.swift in Sources */,
