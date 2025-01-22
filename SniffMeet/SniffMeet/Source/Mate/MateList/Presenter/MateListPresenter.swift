@@ -51,12 +51,16 @@ final class MateListPresenter: MateListPresentable {
             // FIXME: 세션 없음 - 앱 라우터에서 로그인으로 튕기게 하거나 해야할듯
             return
         }
-        interactor?.requestMateList(userID: userID)
+        Task {
+            await interactor?.requestMateList(userID: userID)
+        }
         SNMLogger.info("메이트 리스트 호출")
     }
 
     func didTableViewCellLoad(mateID: UUID, imageName: String?) {
-        interactor?.requestProfileImage(id: mateID, imageName: imageName)
+        Task {
+            await interactor?.requestProfileImage(id: mateID, imageName: imageName)
+        }
     }
 
     func didTabAccessoryButton(mate: Mate) {

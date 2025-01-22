@@ -10,8 +10,8 @@ import Foundation
 protocol MateListInteractable: AnyObject {
     var presenter: MateListInteractorOutput? { get set }
 
-    func requestMateList(userID: UUID)
-    func requestProfileImage(id: UUID, imageName: String?)
+    func requestMateList(userID: UUID) async
+    func requestProfileImage(id: UUID, imageName: String?) async
     func tryProfileDrop()
     func quitProfileDrop()
 }
@@ -40,18 +40,14 @@ final class MateListInteractor: MateListInteractable {
         bind()
     }
 
-    func requestMateList(userID: UUID) {
-        Task { @MainActor in
-            let mateList = await requestMateListUseCase.execute()
-            presenter?.didFetchMateList(mateList: mateList)
-        }
+    func requestMateList(userID: UUID) async {
+        let mateList = await requestMateListUseCase.execute()
+        presenter?.didFetchMateList(mateList: mateList)
     }
 
-    func requestProfileImage(id: UUID, imageName: String?) {
-        Task { @MainActor in
-            let imageData = try await requestProfileImageUseCase.execute(fileName: imageName ?? "")
-            presenter?.didFetchProfileImage(id: id, imageData: imageData)
-        }
+    func requestProfileImage(id: UUID, imageName: String?) async {
+        let imageData = await requestProfileImageUseCase.execute(fileName: imageName ?? "")
+        presenter?.didFetchProfileImage(id: id, imageData: imageData)
     }
     
     func bind() {
