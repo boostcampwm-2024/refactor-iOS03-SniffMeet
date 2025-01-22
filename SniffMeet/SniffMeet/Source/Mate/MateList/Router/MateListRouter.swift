@@ -61,8 +61,7 @@ extension MateListRouter: MateListBuildable {
             cacheManager: ImageNSCacheManager.shared
         )
         let view: MateListViewable & UIViewController = MateListViewController()
-        let presenter: MateListPresentable & MateListInteractorOutput =
-        MateListPresenter()
+        let presenter: MateListPresentable = MateListPresenter()
         let interactor: MateListInteractable = MateListInteractor(
             requestMateListUseCase: requestMateListUseCase,
             requestProfileImageUseCase: requestProfileImageUseCase)

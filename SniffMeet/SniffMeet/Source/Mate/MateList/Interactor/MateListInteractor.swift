@@ -8,18 +8,18 @@
 import Foundation
 
 protocol MateListInteractable: AnyObject {
-    var presenter: MateListInteractorOutput? { get set }
+    var presenter: (any MateListPresentable)? { get set }
 
-    func requestMateList(userID: UUID)
-    func requestProfileImage(id: UUID, imageName: String?)
+    func requestMateList(page: Int, pageSize: Int) async throws -> [Mate]
+    func requestProfileImages(mates: [Mate]) async -> [(mateID: UUID, imageData: Data)]
 }
 
 final class MateListInteractor: MateListInteractable {
-    weak var presenter: (any MateListInteractorOutput)?
+    weak var presenter: (any MateListPresentable)?
     private let requestMateListUseCase: any RequestMateListUseCase
     private let requestProfileImageUseCase: any RequestProfileImageUseCase
     init(
-        presenter: (any MateListInteractorOutput)? = nil,
+        presenter: (any MateListPresentable)? = nil,
         requestMateListUseCase: any RequestMateListUseCase,
         requestProfileImageUseCase: any RequestProfileImageUseCase
 
@@ -29,17 +29,32 @@ final class MateListInteractor: MateListInteractable {
         self.requestProfileImageUseCase = requestProfileImageUseCase
     }
 
-    func requestMateList(userID: UUID) {
-        Task { @MainActor in
-            let mateList = await requestMateListUseCase.execute()
-            presenter?.didFetchMateList(mateList: mateList)
-        }
+    func requestMateList(page: Int, pageSize: Int) async throws -> [Mate] {
+        let mateList = try await requestMateListUseCase.execute(
+            page: page,
+            pageSize: pageSize
+        )
+        return mateList
     }
 
-    func requestProfileImage(id: UUID, imageName: String?) {
-        Task { @MainActor in
-            let imageData = try await requestProfileImageUseCase.execute(fileName: imageName ?? "")
-            presenter?.didFetchProfileImage(id: id, imageData: imageData)
+    func requestProfileImages(mates: [Mate]) async -> [(mateID: UUID, imageData: Data)] {
+        var result: [(UUID, Data)] = []
+
+        await withTaskGroup(of: (UUID, Data?).self) { [weak self] group in
+            for mate in mates {
+                guard let profileImageURLString = mate.profileImageURLString else { continue }
+                group.addTask {
+                    let imageData = try? await self?.requestProfileImageUseCase.execute(
+                        fileName: profileImageURLString
+                    )
+                    return (mate.userID, imageData)
+                }
+            }
+            for await (mateID, profileImageData) in group {
+                guard let profileImageData else { continue }
+                result.append((mateID, profileImageData))
+            }
         }
+        return result
     }
 }
