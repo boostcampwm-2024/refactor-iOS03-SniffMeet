@@ -8,10 +8,10 @@ import Combine
 import Foundation
 
 protocol MateListInteractable: AnyObject {
-    var presenter: MateListInteractorOutput? { get set }
+    var presenter: (any MateListInteractorOutput)? { get set }
 
-    func requestMateList(userID: UUID) async
-    func requestProfileImage(id: UUID, imageName: String?) async
+    func requestMateList(page: Int, pageSize: Int) async throws -> [Mate]
+    func requestProfileImages(mates: [Mate]) async -> [(mateID: UUID, imageData: Data)]
     func tryProfileDrop()
     func quitProfileDrop()
 }
@@ -40,14 +40,33 @@ final class MateListInteractor: MateListInteractable {
         bind()
     }
 
-    func requestMateList(userID: UUID) async {
-        let mateList = await requestMateListUseCase.execute()
-        presenter?.didFetchMateList(mateList: mateList)
+    func requestMateList(page: Int, pageSize: Int) async throws -> [Mate] {
+        let mateList = try await requestMateListUseCase.execute(
+            page: page,
+            pageSize: pageSize
+        )
+        return mateList
     }
 
-    func requestProfileImage(id: UUID, imageName: String?) async {
-        let imageData = await requestProfileImageUseCase.execute(fileName: imageName ?? "")
-        presenter?.didFetchProfileImage(id: id, imageData: imageData)
+    func requestProfileImages(mates: [Mate]) async -> [(mateID: UUID, imageData: Data)] {
+        var result: [(UUID, Data)] = []
+
+        await withTaskGroup(of: (UUID, Data?).self) { [weak self] group in
+            for mate in mates {
+                guard let profileImageURLString = mate.profileImageURLString else { continue }
+                group.addTask {
+                    let imageData = await self?.requestProfileImageUseCase.execute(
+                        fileName: "thumbnail_\(profileImageURLString)"
+                    )
+                    return (mate.userID, imageData)
+                }
+            }
+            for await (mateID, profileImageData) in group {
+                guard let profileImageData else { continue }
+                result.append((mateID, profileImageData))
+            }
+        }
+        return result
     }
     
     func bind() {

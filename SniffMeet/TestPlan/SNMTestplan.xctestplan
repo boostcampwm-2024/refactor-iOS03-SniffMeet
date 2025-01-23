@@ -32,6 +32,13 @@
         "identifier" : "FD331A642CF33C6700F39426",
         "name" : "SupabaseTests"
       }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:SniffMeet.xcodeproj",
+        "identifier" : "A24B1F242D3C32960012B860",
+        "name" : "SNMUtilityTests"
+      }
     }
   ],
   "version" : 1

@@ -36,6 +36,17 @@
                ReferencedContainer = "container:SniffMeet.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "A24B1F242D3C32960012B860"
+               BuildableName = "SNMUtilityTests.xctest"
+               BlueprintName = "SNMUtilityTests"
+               ReferencedContainer = "container:SniffMeet.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
