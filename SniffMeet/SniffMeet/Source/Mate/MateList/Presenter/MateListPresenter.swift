@@ -149,10 +149,6 @@ final class MateListPresenter: MateListPresentable {
             self.output.profileImageData.send($0)
         }
     }
-    private func didFetchProfileImage(mateID: UUID, imageData: Data?) {
-        guard let imageData else { return }
-        output.profileImageData.send((mateID, imageData))
-    }
 
     private func didReachEndOfMateList() {
         isReachedBottom = true

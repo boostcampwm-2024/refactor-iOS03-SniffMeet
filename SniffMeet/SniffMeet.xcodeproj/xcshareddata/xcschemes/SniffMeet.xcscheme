@@ -30,8 +30,7 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <TestPlans>
          <TestPlanReference
-            reference = "container:TestPlan/SNMPersistenceTestPlan.xctestplan"
-            default = "YES">
+            reference = "container:TestPlan/SNMPersistenceTestPlan.xctestplan">
          </TestPlanReference>
          <TestPlanReference
             reference = "container:TestPlan/SNMNetworkTestPlan.xctestplan">
@@ -45,6 +44,10 @@
          <TestPlanReference
             reference = "container:TestPlan/SNMUtilityTestPlan.xctestplan">
          </TestPlanReference>
+         <TestPlanReference
+            reference = "container:TestPlan/SNMSceneTestPlan.xctestplan"
+            default = "YES">
+         </TestPlanReference>
       </TestPlans>
       <Testables>
          <TestableReference
@@ -55,6 +58,17 @@
                BlueprintIdentifier = "FD69B1B92CE3BCDC009D71DC"
                BuildableName = "SNMPersistenceTests.xctest"
                BlueprintName = "SNMPersistenceTests"
+               ReferencedContainer = "container:SniffMeet.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "32BD48272D3FEC9D0078DA9C"
+               BuildableName = "SNMSceneTests.xctest"
+               BlueprintName = "SNMSceneTests"
                ReferencedContainer = "container:SniffMeet.xcodeproj">
             </BuildableReference>
          </TestableReference>

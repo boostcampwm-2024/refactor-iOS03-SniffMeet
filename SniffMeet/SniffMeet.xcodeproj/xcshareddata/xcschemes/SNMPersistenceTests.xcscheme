@@ -30,6 +30,17 @@
             parallelizable = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "32BD48272D3FEC9D0078DA9C"
+               BuildableName = "SNMSceneTests.xctest"
+               BlueprintName = "SNMSceneTests"
+               ReferencedContainer = "container:SniffMeet.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "A24B1F242D3C32960012B860"
                BuildableName = "SNMUtilityTests.xctest"
                BlueprintName = "SNMUtilityTests"
