@@ -30,8 +30,7 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <TestPlans>
          <TestPlanReference
-            reference = "container:TestPlan/SNMPersistenceTestPlan.xctestplan"
-            default = "YES">
+            reference = "container:TestPlan/SNMPersistenceTestPlan.xctestplan">
          </TestPlanReference>
          <TestPlanReference
             reference = "container:TestPlan/SNMNetworkTestPlan.xctestplan">
@@ -46,7 +45,8 @@
             reference = "container:TestPlan/SNMUtilityTestPlan.xctestplan">
          </TestPlanReference>
          <TestPlanReference
-            reference = "container:TestPlan/SNMSceneTestPlan.xctestplan">
+            reference = "container:TestPlan/SNMSceneTestPlan.xctestplan"
+            default = "YES">
          </TestPlanReference>
       </TestPlans>
       <Testables>

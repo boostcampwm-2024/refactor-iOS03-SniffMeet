@@ -17,7 +17,7 @@ struct RequestMateListUseCaseMock: RequestMateListUseCase {
         self.mateList = mateList
     }
     
-    func execute() async -> [Mate] {
+    func execute(page: Int, pageSize: Int) async throws -> [Mate] {
         mateList.map{
             Mate(name: $0.dogName,
                  userID: $0.id,

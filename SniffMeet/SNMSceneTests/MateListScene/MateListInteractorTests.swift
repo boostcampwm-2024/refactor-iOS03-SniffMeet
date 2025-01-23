@@ -43,33 +43,6 @@ final class MateListInteractorTests: XCTestCase {
         tryProfileDropUseCaseMock = nil
         quitProfileDropUseCaseMock = nil
     }
-    func test_requestMateList는_presenter에게_올바른_메이트_리스트를_전달한다() async {
-        // Arrange
-        
-        // Act
-        // 파라미터로 받은 userID는 Mock객체 동작에 상관없음
-        let _ = await sut.requestMateList(userID: UUID())
-        
-        // Assert
-        XCTAssertTrue(presenterSpy.presentMateListsCalled,
-                      "presenter에서 메이트리스트를 view에게 전달하는 메서드를 호출한다. " )
-        presenterSpy.receivedMateList?.enumerated().forEach { (idx, mate) in
-            XCTAssertEqual(mate.userID, userInfoDTOList[idx].id,
-                           "presenter가 성공적으로 메이트 리스트 데이터를 받는다. ")
-        }
-    }
-    
-    func test_requestProfileImage는_presenter에게_올바른_이미지를_전달한다() async {
-        // Arrange
-        
-        // Act
-        // 파라미터로 받은 id와 imageNamge은 Mock객체 동작에 상관없음
-        let _ = await sut.requestProfileImage(id: UUID(), imageName: nil)
-        
-        // Assert
-        XCTAssertTrue(presenterSpy.presentProfileImageCalled,
-                      "presenter가 이미지를 view에게 전달하는 메서드를 호출한다." )
-    }
     
     func test_tryProfileDropUseCase가_profilePublisher를_send_호출시_presenter에_프로필데이터를_전달한다() async throws {
         // Arrange

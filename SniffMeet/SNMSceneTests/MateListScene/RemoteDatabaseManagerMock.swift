@@ -35,7 +35,7 @@ final class RemoteDatabaseManagerMock: RemoteDatabaseManager {
         self.hasUpdated = true
     }
     
-    func fetchList(into table: String, with data: Data) async throws -> Data {
+    func fetchList(into table: String = "", with data: Data, page: Int, pageSize: Int = 0 ) async throws -> Data {
         guard let fetchListData else { throw SNMNetworkError.failedStatusCode(reason: .notFound)}
         return fetchListData
     }
