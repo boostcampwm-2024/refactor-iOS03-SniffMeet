@@ -30,13 +30,11 @@ final class ProfileCreateRouter: ProfileCreateRoutable {
 
 extension ProfileCreateRouter: ProfileCreateBuildable {
     static func createProfileCreateModule(dogDetailInfo: DogInfo) -> UIViewController {
-        let saveUserInfoUseCase: SaveUserInfoUseCase =
-        SaveUserInfoUseCaseImpl(
+        let saveUserInfoUseCase: SaveUserInfoUseCase = SaveUserInfoUseCaseImpl(
             localDataManager: LocalDataManager(),
             imageManager: SNMFileManager(fileType: .image)
         )
-        let saveProfileImageUseCase: SaveProfileImageUseCase =
-        SaveProfileImageUseCaseImpl(
+        let saveProfileImageUseCase: SaveProfileImageUseCase = SaveProfileImageUseCaseImpl(
             remoteImageManager: SupabaseStorageManager(
                 networkProvider: SNMNetworkProvider()
             ),
@@ -44,7 +42,10 @@ extension ProfileCreateRouter: ProfileCreateBuildable {
             imageSampler: ImageSampler()
         )
         let createAccountUseCase: CreateAccountUseCase = CreateAccountUseCaseImpl()
-
+        let signInUseCase: SignInUseCase = SignInUseCaseImpl(
+            authManager: SupabaseAuthManager.shared
+        )
+        
         let view: ProfileCreateViewable & UIViewController = ProfileCreateViewController()
         let presenter: ProfileCreatePresentable & DogInfoInteractorOutput
         = ProfileCreatePresenter(dogInfo: dogDetailInfo)
@@ -52,16 +53,17 @@ extension ProfileCreateRouter: ProfileCreateBuildable {
         ProfileCreateInteractor(
             saveUserInfoUseCase: saveUserInfoUseCase,
             saveProfileImageUseCase: saveProfileImageUseCase,
-            saveUserInfoRemoteUseCase: createAccountUseCase
+            saveUserInfoRemoteUseCase: createAccountUseCase,
+            signInUseCase: signInUseCase
         )
         let router: ProfileCreateRoutable & ProfileCreateBuildable = ProfileCreateRouter()
-
+        
         view.presenter = presenter
         presenter.view = view
         presenter.router = router
         presenter.interactor = interactor
         interactor.presenter = presenter
-
+        
         return view
     }
     
