@@ -13,16 +13,25 @@ protocol UpdateUserInfoUseCase {
 
 struct UpdateUserInfoUseCaseImpl: UpdateUserInfoUseCase {
     private let remoteDBManager: any RemoteDBManageable
+    private let sessionManager: any SessionManageable
     
-    init(remoteDBManager: any RemoteDBManageable) {
+    init(
+        remoteDBManager: any RemoteDBManageable,
+        sessionManager: any SessionManageable
+    ) {
         self.remoteDBManager = remoteDBManager
+        self.sessionManager = sessionManager
     }
     
     func execute(info: UserInfoDTO) async {
         do {
+            guard let id = sessionManager.userID else {
+                throw SupabaseAuthError.userNotFound
+            }
             let userData = try JSONEncoder().encode(info)
             try await remoteDBManager.updateData(
-                into: Environment.SupabaseTableName.userInfo,
+                in: Environment.SupabaseTableName.userInfo,
+                at: id,
                 with: userData
             )
         } catch {

@@ -30,13 +30,14 @@ final class ProfileCreateRouter: ProfileCreateRoutable {
 
 extension ProfileCreateRouter: ProfileCreateBuildable {
     static func createProfileCreateModule(dogDetailInfo: DogInfo) -> UIViewController {
+        let networkProvider = SNMNetworkProvider()
         let saveUserInfoUseCase: SaveUserInfoUseCase = SaveUserInfoUseCaseImpl(
             localDataManager: LocalDataManager(),
             imageManager: SNMFileManager(fileType: .image)
         )
         let saveProfileImageUseCase: SaveProfileImageUseCase = SaveProfileImageUseCaseImpl(
             remoteImageManager: SupabaseStorageManager(
-                networkProvider: SNMNetworkProvider()
+                networkProvider: networkProvider
             ),
             userDefaultsManager: UserDefaultsManager.shared,
             imageSampler: ImageSampler()
@@ -46,7 +47,7 @@ extension ProfileCreateRouter: ProfileCreateBuildable {
         )
         let signInUseCase: SignInUseCase = SignInUseCaseImpl(
             authManager: SupabaseAuthManager(
-                networkProvider: SNMNetworkProvider(),
+                networkProvider: networkProvider,
                 decoder: JSONDecoder()
             )
         )

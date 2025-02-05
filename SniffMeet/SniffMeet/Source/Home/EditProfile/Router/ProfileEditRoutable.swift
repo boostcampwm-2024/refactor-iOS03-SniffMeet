@@ -30,7 +30,8 @@ extension ProfileEditRouter: ProfileEditBuildable {
             imageManager: SNMFileManager(fileType: .image)
         )
         let updateUserInfoRemoteUseCase: UpdateUserInfoUseCase = UpdateUserInfoUseCaseImpl(
-            remoteDBManager: SupabaseDBManager.shared
+            remoteDBManager: SupabaseDBManager.shared,
+            sessionManager: SessionManager.shared
         )
         let saveProfileImageUseCase: SaveProfileImageUseCase = SaveProfileImageUseCaseImpl(
             remoteImageManager: SupabaseStorageManager(

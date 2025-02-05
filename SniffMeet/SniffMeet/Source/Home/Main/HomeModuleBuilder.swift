@@ -26,7 +26,8 @@ enum HomeModuleBuilder {
             remoteSaveDeviceTokenUseCase: RemoteSaveDeviceTokenUseCaseImpl(
                 jsonEncoder: JSONEncoder(),
                 keychainManager: KeychainManager.shared,
-                remoteDBManager: SupabaseDBManager.shared
+                remoteDBManager: SupabaseDBManager.shared,
+                sessionManager: SessionManager.shared
             )
         )
         view.presenter = HomePresenter(view: view, router: router, interactor: interactor)

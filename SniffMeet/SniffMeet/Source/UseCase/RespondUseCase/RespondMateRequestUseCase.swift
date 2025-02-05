@@ -7,20 +7,31 @@
 import Foundation
 
 protocol RespondMateRequestUseCase {
-    var localDataManager: DataStorable & DataLoadable { get }
     func execute(mateId: UUID, isAccepted: Bool) async
 }
 
 struct RespondMateRequestUseCaseImpl: RespondMateRequestUseCase {
-    var localDataManager: DataStorable & DataLoadable
-    var remoteDataManger: any RemoteDBManageable
+    private let localDataManager: DataStorable & DataLoadable
+    private let remoteDataManger: any RemoteDBManageable
+    private let sessionManager: any SessionManageable
+    
+    init(
+        localDataManager: DataStorable & DataLoadable,
+        remoteDataManger: any RemoteDBManageable,
+        sessionManager: any SessionManageable
+    ) {
+        self.localDataManager = localDataManager
+        self.remoteDataManger = remoteDataManger
+        self.sessionManager = sessionManager
+    }
     
     func execute(mateId: UUID, isAccepted: Bool) async {
         if isAccepted {
             await addMate(mateId: mateId)
         }
     }
-    func addMate(mateId: UUID) async {
+    
+    private func addMate(mateId: UUID) async {
         var mateList: [UUID] =  []
         let encoder = JSONEncoder()
         do {
@@ -29,15 +40,17 @@ struct RespondMateRequestUseCaseImpl: RespondMateRequestUseCase {
             mateList = []
         }
         do {
-            guard let userID = SessionManager.shared.userID else {
-                throw SupabaseSessionError.sessionNotExist
+            guard let id = sessionManager.userID else {
+                throw SupabaseAuthError.userNotFound
             }
-            
             mateList.append(mateId)
             mateList = Array(Set(mateList))
             let mateListData = try encoder.encode(MateListDTO(mates: mateList))
-            try await remoteDataManger.updateData(into: Environment.SupabaseTableName.matelist,
-                                                  with: mateListData)
+            try await remoteDataManger.updateData(
+                in: Environment.SupabaseTableName.matelist,
+                at: id,
+                with: mateListData
+            )
             
             try localDataManager.storeData(data:mateList, key: Environment.UserDefaultsKey.mateList)
         } catch {
