@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 struct RequestMateListUseCaseMock: RequestMateListUseCase {
-    var remoteDBManager: any RemoteDBManager
+    var remoteDBManager: any RemoteDBManageable
     var mateList: [UserInfoDTO]
     
     init(mateList: [UserInfoDTO]) {

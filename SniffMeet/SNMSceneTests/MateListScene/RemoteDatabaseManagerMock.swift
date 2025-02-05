@@ -6,7 +6,7 @@
 //
 import Foundation
 
-final class remoteDBManagerMock: RemoteDBManager {
+final class remoteDBManagerMock: RemoteDBManageable {
     var fetchData: Data?
     var hasInserted: Bool = false
     var hasUpdated: Bool = false
@@ -27,12 +27,8 @@ final class remoteDBManagerMock: RemoteDBManager {
         hasInserted = true
     }
     
-    func updateData(into table: String, with data: Data) async throws {
+    func updateData(in table: String, at id: UUID?, with data: Data) async throws {
         hasUpdated = true
-    }
-    
-    func updateData(into table: String, at id: UUID, with data: Data) async throws {
-        self.hasUpdated = true
     }
     
     func fetchList(into table: String = "", with data: Data, page: Int, pageSize: Int = 0 ) async throws -> Data {

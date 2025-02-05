@@ -9,7 +9,7 @@ import UIKit
 import XCTest
 
 final class SupabaseStorageTests: XCTestCase {
-    private var storageManager: (any RemoteImageManagable)!
+    private var storageManager: (any RemoteImageManageable)!
 
     override func setUp() {
         self.storageManager = SupabaseStorageManager(
